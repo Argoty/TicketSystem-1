@@ -7,19 +7,21 @@ import java.time.LocalDate;
 
 @Data
 @Entity
-public class TicketRecord {
-
+public class TicketRecordEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "previus_state")
-    private String previusState;
+    @ManyToOne()
+    @JoinColumn(name = "ticket_id", nullable = false)
+    private TicketEntity ticket;
+
+    @Column(name = "previous_state")
+    private String previousState;
 
     @Column(name = "next_state")
     private String nextState;
 
     @Column(name = "change_date")
     private LocalDate changeDate;
-
 }

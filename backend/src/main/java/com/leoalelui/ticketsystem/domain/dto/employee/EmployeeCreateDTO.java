@@ -1,4 +1,4 @@
-package com.leoalelui.ticketsystem.domain.dto;
+package com.leoalelui.ticketsystem.domain.dto.employee;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
