@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.time.LocalDateTime;
 import lombok.Data;
 
 @Data
@@ -21,6 +22,5 @@ public class Assignment {
     @JoinColumn(name = "employee_id", nullable = false)
     private EmployeeEntity employee;
 
-    private String assignment_date;
-
+    private LocalDateTime assignment_date;
 }

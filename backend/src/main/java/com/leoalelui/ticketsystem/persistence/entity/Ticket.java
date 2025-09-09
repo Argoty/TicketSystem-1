@@ -14,8 +14,12 @@ public class Ticket {
     @ManyToOne()
     @JoinColumn(name = "employee_id", nullable = false)
     private EmployeeEntity employee;
+    
+    @ManyToOne()
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category categor;
 
-    private String tittle;
+    private String title;
 
     private String description;
 
