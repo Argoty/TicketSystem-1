@@ -1,13 +1,14 @@
 package com.leoalelui.ticketsystem.persistence.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import java.time.LocalDateTime;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Data
 @Entity
@@ -23,6 +24,8 @@ public class AssignmentEntity {
     @JoinColumn(name = "employee_id", nullable = false)
     private EmployeeEntity employee;
 
-    private LocalDateTime assignment_date;
+    @CreationTimestamp
+    @Column(name = "assignment_date", nullable = false, updatable = false)
+    private LocalDateTime assignmentDate;
 }
 
