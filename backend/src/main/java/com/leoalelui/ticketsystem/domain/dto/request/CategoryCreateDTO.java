@@ -1,7 +1,6 @@
-package com.leoalelui.ticketsystem.domain.dto;
+package com.leoalelui.ticketsystem.domain.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

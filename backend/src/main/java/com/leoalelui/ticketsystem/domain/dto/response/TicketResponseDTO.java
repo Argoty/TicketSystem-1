@@ -1,7 +1,6 @@
-package com.leoalelui.ticketsystem.domain.dto.ticket;
+package com.leoalelui.ticketsystem.domain.dto.response;
 
-import com.leoalelui.ticketsystem.persistence.entity.Category;
-import com.leoalelui.ticketsystem.persistence.entity.EmployeeEntity;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 /**
@@ -12,8 +11,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class TicketResponseDTO {
     private Long id;
-    private EmployeeEntity employee;
-    private Category category;
+    private EmployeeResponseDTO employee;
+    private CategoryResponseDTO category;
     private String title;
     private String description;
     private String priority;

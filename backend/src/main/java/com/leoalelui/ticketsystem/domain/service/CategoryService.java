@@ -1,7 +1,7 @@
 package com.leoalelui.ticketsystem.domain.service;
 
-import com.leoalelui.ticketsystem.domain.dto.CategoryCreateDTO;
-import com.leoalelui.ticketsystem.domain.dto.CategoryResponseDTO;
+import com.leoalelui.ticketsystem.domain.dto.request.CategoryCreateDTO;
+import com.leoalelui.ticketsystem.domain.dto.response.CategoryResponseDTO;
 
 /**
  * @author: alej0nt

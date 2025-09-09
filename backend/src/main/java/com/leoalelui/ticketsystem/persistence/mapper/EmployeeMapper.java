@@ -1,8 +1,8 @@
 package com.leoalelui.ticketsystem.persistence.mapper;
 
-import com.leoalelui.ticketsystem.domain.dto.EmployeeCreateDTO;
-import com.leoalelui.ticketsystem.domain.dto.EmployeeResponseDTO;
-import com.leoalelui.ticketsystem.domain.dto.EmployeeUpdateDTO;
+import com.leoalelui.ticketsystem.domain.dto.request.EmployeeCreateDTO;
+import com.leoalelui.ticketsystem.domain.dto.response.EmployeeResponseDTO;
+import com.leoalelui.ticketsystem.domain.dto.request.EmployeeUpdateDTO;
 import com.leoalelui.ticketsystem.persistence.entity.EmployeeEntity;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;

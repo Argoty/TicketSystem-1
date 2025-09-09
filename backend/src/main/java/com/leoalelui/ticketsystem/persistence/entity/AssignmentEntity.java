@@ -7,20 +7,22 @@ import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Entity
-public class Assignment {
-
+public class AssignmentEntity {
     @Id
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "ticket_id", nullable = false)
-    private Ticket ticket;
+    private TicketEntity ticket;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
     private EmployeeEntity employee;
 
     private LocalDateTime assignment_date;
 }
+

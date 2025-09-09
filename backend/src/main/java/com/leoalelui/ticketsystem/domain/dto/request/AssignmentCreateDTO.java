@@ -1,4 +1,4 @@
-package com.leoalelui.ticketsystem.domain.dto.assignment;
+package com.leoalelui.ticketsystem.domain.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,6 @@
 package com.leoalelui.ticketsystem.persistence.repository;
 
-import com.leoalelui.ticketsystem.persistence.entity.Comment;
+import com.leoalelui.ticketsystem.persistence.entity.CommentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CommentRepository extends JpaRepository<Comment, Long> {}
+public interface CommentRepository extends JpaRepository<CommentEntity, Long> {}

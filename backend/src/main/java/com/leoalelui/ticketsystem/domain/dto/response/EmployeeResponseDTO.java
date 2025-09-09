@@ -1,4 +1,4 @@
-package com.leoalelui.ticketsystem.domain.dto;
+package com.leoalelui.ticketsystem.domain.dto.response;
 
 import lombok.Data;
 import lombok.AllArgsConstructor;
