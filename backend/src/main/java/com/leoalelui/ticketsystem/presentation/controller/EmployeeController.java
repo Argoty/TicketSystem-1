@@ -1,8 +1,8 @@
 package com.leoalelui.ticketsystem.presentation.controller;
 
-import com.leoalelui.ticketsystem.domain.dto.EmployeeCreateDTO;
-import com.leoalelui.ticketsystem.domain.dto.EmployeeUpdateDTO;
-import com.leoalelui.ticketsystem.domain.dto.EmployeeResponseDTO;
+import com.leoalelui.ticketsystem.domain.dto.employee.EmployeeCreateDTO;
+import com.leoalelui.ticketsystem.domain.dto.employee.EmployeeUpdateDTO;
+import com.leoalelui.ticketsystem.domain.dto.employee.EmployeeResponseDTO;
 import com.leoalelui.ticketsystem.domain.service.EmployeeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

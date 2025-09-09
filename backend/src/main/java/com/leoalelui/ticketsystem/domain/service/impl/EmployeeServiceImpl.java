@@ -1,8 +1,8 @@
 package com.leoalelui.ticketsystem.domain.service.impl;
 
-import com.leoalelui.ticketsystem.domain.dto.EmployeeCreateDTO;
-import com.leoalelui.ticketsystem.domain.dto.EmployeeResponseDTO;
-import com.leoalelui.ticketsystem.domain.dto.EmployeeUpdateDTO;
+import com.leoalelui.ticketsystem.domain.dto.employee.EmployeeCreateDTO;
+import com.leoalelui.ticketsystem.domain.dto.employee.EmployeeResponseDTO;
+import com.leoalelui.ticketsystem.domain.dto.employee.EmployeeUpdateDTO;
 import com.leoalelui.ticketsystem.domain.service.EmployeeService;
 import com.leoalelui.ticketsystem.persistence.dao.EmployeeDAO;
 import com.leoalelui.ticketsystem.persistence.entity.EmployeeEntity;
