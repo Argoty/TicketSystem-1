@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 @Data
 @Entity
+@Table(name = "ticket_record")
 public class TicketRecordEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +25,6 @@ public class TicketRecordEntity {
     private String nextState;
 
     @CreationTimestamp
-    @Column(name = "changed_date", nullable = false, updatable = false)
-    private LocalDateTime changedDate;
+    @Column(name = "change_date", nullable = false, updatable = false)
+    private LocalDateTime changeDate;
 }

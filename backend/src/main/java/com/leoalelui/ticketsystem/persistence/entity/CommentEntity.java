@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 @Data
 @Entity
+@Table(name = "comment")
 public class CommentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

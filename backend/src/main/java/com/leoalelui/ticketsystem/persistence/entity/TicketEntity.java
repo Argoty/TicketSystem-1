@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 @Data
 @Entity
+@Table(name = "ticket")
 public class TicketEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

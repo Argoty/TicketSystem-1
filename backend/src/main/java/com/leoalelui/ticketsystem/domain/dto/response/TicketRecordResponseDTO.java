@@ -16,5 +16,5 @@ public class TicketRecordResponseDTO {
     private TicketResponseDTO ticket;
     private String previousState;
     private String nextState;
-    private LocalDateTime changedDate;
+    private LocalDateTime changeDate;
 }
