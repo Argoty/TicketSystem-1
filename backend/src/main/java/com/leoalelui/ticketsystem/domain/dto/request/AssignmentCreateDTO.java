@@ -13,7 +13,6 @@ import lombok.Data;
 @AllArgsConstructor
 @Schema(description = "Datos para crear una nueva asignación de ticket")
 public class AssignmentCreateDTO {
-
     @NotNull(message = "El id del ticket no puede ser nulo.")
     @Schema(description = "ID del ticket a asignar", example = "123", required = true)
     private Long ticketId;

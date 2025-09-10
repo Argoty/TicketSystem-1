@@ -8,7 +8,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class EmployeeUpdateDTO {
-
     @NotBlank(message = "El nombre del empleado no puede ser nulo o vacío.")
     private String name;
 
@@ -16,12 +15,9 @@ public class EmployeeUpdateDTO {
     @Email(message = "Formato de email invàlido.")
     private String email;
 
-    private String password;
-
     @NotBlank(message = "El role del empleado no puede ser nulo o vacío.")
     private String role;
 
     @NotBlank(message = "El departamento del empleado no puede ser nulo o vacío.")
     private String department;
-
 }
