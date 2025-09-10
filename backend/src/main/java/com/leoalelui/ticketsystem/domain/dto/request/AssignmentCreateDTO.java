@@ -11,7 +11,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class AssignmentCreateDTO {
-
     @NotNull(message = "El id del ticket no puede ser nulo.")
     private Long ticketId;
 

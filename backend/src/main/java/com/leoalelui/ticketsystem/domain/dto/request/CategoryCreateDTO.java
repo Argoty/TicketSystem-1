@@ -10,10 +10,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class CategoryCreateDTO {
-
     @NotBlank(message = "The category name cannot be empty")
     private String name;
+
     @NotBlank(message = "The category description cannot be empty")
     private String description;
-
 }
