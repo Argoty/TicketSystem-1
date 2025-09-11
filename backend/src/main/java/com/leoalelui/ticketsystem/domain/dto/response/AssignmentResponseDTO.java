@@ -20,7 +20,7 @@ public class AssignmentResponseDTO {
     @Schema(description = "Resumen del ticket asignado")
     private TicketResponseDTO ticket;
 
-    @Schema(description = "Resumen del empleado asignado")
+    @Schema(description = "Resumen del empleado agente asignado")
     private EmployeeResponseDTO employee;
 
     @Schema(description = "Fecha y hora de la asignación", example = "2025-09-09T10:30:00", accessMode = Schema.AccessMode.READ_ONLY)

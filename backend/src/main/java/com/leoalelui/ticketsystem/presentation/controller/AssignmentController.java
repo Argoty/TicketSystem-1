@@ -4,6 +4,7 @@ import com.leoalelui.ticketsystem.domain.dto.request.AssignmentCreateDTO;
 import com.leoalelui.ticketsystem.domain.dto.response.AssignmentResponseDTO;
 //import com.leoalelui.ticketsystem.domain.service.AssignmentService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -19,14 +20,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- *
+ * Controller para manejar las asignaciones que se hagan en tickets.
  * @author Leonardo Argoty
  */
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("api/assignments")
-@Tag(name = "Assignments", description = "Operaciones para manejar asignaciones de tickets a empleados")
+@Tag(name = "Asignaciones", description = "Operaciones para manejar asignaciones de tickets a empleados")
 public class AssignmentController {
 
     //private final AssignmentService assignmentService;
@@ -55,7 +56,7 @@ public class AssignmentController {
             @ApiResponse(responseCode = "401", description = "No autorizado")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<AssignmentResponseDTO> getAssignmentById(@PathVariable Long id) {
+    public ResponseEntity<AssignmentResponseDTO> getAssignmentById(@PathVariable @Parameter(description = "ID de la asignacion a buscar") Long id) {
         //AssignmentResponseDTO dto = assignmentService.getById(id);
         return ResponseEntity.ok(null);
     }
@@ -72,15 +73,15 @@ public class AssignmentController {
         return ResponseEntity.ok(null);
     }
 
-    @Operation(summary = "Listar asignaciones por empleado", description = "Devuelve las asignaciones asociadas a un empleado.")
+    @Operation(summary = "Listar asignaciones por empleado agente", description = "Devuelve las asignaciones asociadas a un empleado agente.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Asignaciones del empleado",
+            @ApiResponse(responseCode = "200", description = "Asignaciones del empleado agente",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = AssignmentResponseDTO.class)))),
-            @ApiResponse(responseCode = "404", description = "Empleado no encontrado"),
+            @ApiResponse(responseCode = "404", description = "Agente no encontrado"),
             @ApiResponse(responseCode = "401", description = "No autorizado")
     })
     @GetMapping("/employee/{employeeId}")
-    public ResponseEntity<List<AssignmentResponseDTO>> getAssignmentsByEmployee(@PathVariable Long employeeId) {
+    public ResponseEntity<List<AssignmentResponseDTO>> getAssignmentsByEmployee(@PathVariable @Parameter(description = "ID del empleado agente con sus asignaciones") Long employeeId) {
         //List<AssignmentResponseDTO> list = assignmentService.getByEmployeeId(employeeId);
         return ResponseEntity.ok(null);
     }
@@ -93,7 +94,7 @@ public class AssignmentController {
             @ApiResponse(responseCode = "401", description = "No autorizado")
     })
     @GetMapping("/ticket/{ticketId}")
-    public ResponseEntity<List<AssignmentResponseDTO>> getAssignmentsByTicket(@PathVariable Long ticketId) {
+    public ResponseEntity<List<AssignmentResponseDTO>> getAssignmentsByTicket(@PathVariable @Parameter(description = "ID del ticket con sus asignaciones") Long ticketId) {
         //List<AssignmentResponseDTO> list = assignmentService.getByTicketId(ticketId);
         return ResponseEntity.ok(null);
     }
@@ -106,7 +107,7 @@ public class AssignmentController {
             @ApiResponse(responseCode = "403", description = "Prohibido - rol insuficiente")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAssignment(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteAssignment(@PathVariable @Parameter(description = "ID de la asignacion a eliminar") Long id) {
         //assignmentService.delete(id);
         return ResponseEntity.noContent().build();
     }
