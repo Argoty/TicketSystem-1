@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
+ * DTO de creación para asignaciones
  * 
  * @author Leonardo Argoty
  */

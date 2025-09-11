@@ -5,13 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.time.LocalDate;
-
 /**
- * DTO de creación para registros de tickets
- * Representa un cambio de estado en el historial de un ticket.
- * Incluye el ticket afectado, el estado anterior y el nuevo estado.
+ * DTO de creación para registros de tickets , cuando hay algun cambio en su estado
  * 
  * @author Leonardo Argoty
  */

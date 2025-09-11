@@ -8,33 +8,32 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.Data;
-
 import java.time.LocalDateTime;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 /**
  *
- * @author leonardo argoty
+ * @author leona
  */
 @Data
 @Entity
-@Table(name = "assignment")
-public class AssignmentEntity {
+@Table(name="notification")
+public class NotificationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "ticket_id", nullable = false)
-    private TicketEntity ticket;
-
-    @ManyToOne
-    @JoinColumn(name = "employee_id", nullable = false)
-    private EmployeeEntity employee;
-
+    
+    private String message;
+    
+    @Column(name="is_read")
+    private boolean isRead;
+    
     @CreationTimestamp
-    @Column(name = "assignment_date", nullable = false, updatable = false)
-    private LocalDateTime assignmentDate;
+    @Column(name="creation_date", nullable = false, updatable = false)
+    private LocalDateTime creationDate;
+    
+    @ManyToOne
+    @JoinColumn(name="employee_id", nullable=false)
+    private EmployeeEntity employee;
 }
-
