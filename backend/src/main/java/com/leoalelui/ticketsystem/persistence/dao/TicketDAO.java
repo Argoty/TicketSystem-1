@@ -37,7 +37,6 @@ public class TicketDAO {
                 });
     }
 
-
     public void deleteById(Long id) {
         ticketRepository.deleteById(id);
     }
@@ -45,10 +44,6 @@ public class TicketDAO {
     public Optional<TicketResponseDTO> findById(Long id) {
         return ticketRepository.findById(id)
                 .map(ticketMapper::toResponseDTO);
-    }
-
-    public Optional<TicketEntity> findEntityById(Long id) {
-        return ticketRepository.findById(id);
     }
 
     public List<TicketResponseDTO> findAll() {

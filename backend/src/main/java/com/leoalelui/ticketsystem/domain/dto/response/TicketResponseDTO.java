@@ -13,8 +13,8 @@ public class TicketResponseDTO {
     @Schema(description = "Identificador único del ticket", example = "5001")
     private Long id;
 
-    @Schema(description = "Empleado asignado al ticket")
-    private EmployeeResponseDTO employee;
+    @Schema(description = "ID del empleado asignado al ticket")
+    private Long employeeId;
 
     @Schema(description = "Categoría a la que pertenece el ticket")
     private CategoryResponseDTO category;
