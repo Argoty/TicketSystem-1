@@ -22,6 +22,7 @@ public interface TicketMapper {
     @Mapping(target = "category", source = "categoryId", qualifiedByName = "createCategoryEntityFromId")
     TicketEntity toEntity(TicketCreateDTO ticketCreateDTO);
 
+    @Mapping(target = "employeeId", source = "employee.id")
     TicketResponseDTO toResponseDTO(TicketEntity ticketEntity);
 
     @Named("createTicketEntityFromId")

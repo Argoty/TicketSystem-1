@@ -3,11 +3,9 @@ package com.leoalelui.ticketsystem.domain.service.impl;
 import com.leoalelui.ticketsystem.domain.dto.request.EmployeeCreateDTO;
 import com.leoalelui.ticketsystem.domain.dto.request.EmployeeUpdateDTO;
 import com.leoalelui.ticketsystem.domain.dto.response.EmployeeResponseDTO;
+import com.leoalelui.ticketsystem.domain.exception.ResourceNotFoundException;
 import com.leoalelui.ticketsystem.domain.service.EmployeeService;
 import com.leoalelui.ticketsystem.persistence.dao.EmployeeDAO;
-import com.leoalelui.ticketsystem.persistence.entity.EmployeeEntity;
-import com.leoalelui.ticketsystem.persistence.mapper.EmployeeMapper;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,81 +16,46 @@ import java.util.List;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeDAO employeeDAO;
-    private final EmployeeMapper employeeMapper;
 
     @Override
     public EmployeeResponseDTO createEmployee(EmployeeCreateDTO employeeCreateDTO) {
-        boolean existEmail = employeeDAO.existsByEmail(employeeCreateDTO.getEmail());
-
-        if (existEmail) {
+        if (employeeDAO.existsByEmail(employeeCreateDTO.getEmail())) {
             throw new RuntimeException("El email ya existe.");
         }
-
-        EmployeeEntity employee = employeeMapper.toEntity(employeeCreateDTO);
-
-        employee.setRole("USER");
-
-        EmployeeEntity saved = employeeDAO.save(employee);
-        return employeeMapper.toResponseDTO(saved);
+        return employeeDAO.save(employeeCreateDTO);
     }
 
     @Override
     public EmployeeResponseDTO updateEmployee(Long id, EmployeeUpdateDTO employeeUpdateDTO) {
-        EmployeeEntity employee = employeeDAO.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Empleado no encontrado."));
-
-        boolean existEmail = employeeDAO.existsByEmail(employeeUpdateDTO.getEmail());
-
-        if (existEmail) {
+        if (employeeDAO.existsByEmail(employeeUpdateDTO.getEmail())) {
             throw new RuntimeException("El email ya existe.");
         }
-
-        employee.setName(employeeUpdateDTO.getName());
-        employee.setEmail(employeeUpdateDTO.getEmail());
-        employee.setRole(employeeUpdateDTO.getRole());
-        employee.setDepartment(employeeUpdateDTO.getDepartment());
-
-        EmployeeEntity updated = employeeDAO.save(employee);
-        return employeeMapper.toResponseDTO(updated);
+        return employeeDAO.update(id, employeeUpdateDTO)
+                .orElseThrow(() -> new ResourceNotFoundException("Empleado no encontrado."));
     }
 
     @Override
     public void deleteEmployee(Long id) {
-        boolean existId = employeeDAO.existsById(id);
-
-        if (!existId) {
-            throw new EntityNotFoundException("Empleado no encontrado.");
+        if (!employeeDAO.existsById(id)) {
+            throw new ResourceNotFoundException("Empleado no encontrado.");
         }
-
         employeeDAO.deleteById(id);
     }
 
     @Override
     public EmployeeResponseDTO getEmployeeById(Long id) {
-        EmployeeEntity employee = employeeDAO.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Empleado no encontrado."));
-        return employeeMapper.toResponseDTO(employee);
+        return employeeDAO.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Empleado no encontrado."));
     }
 
     @Override
     public List<EmployeeResponseDTO> getAllEmployees() {
-        return employeeDAO.findAll()
-                .stream()
-                .map(employeeMapper::toResponseDTO)
-                .toList();
+        return employeeDAO.findAll();
     }
 
     @Override
     public EmployeeResponseDTO getEmployeeByEmail(String email) {
-        EmployeeEntity employee = employeeDAO.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("Empleado no encontrado."));
-        return employeeMapper.toResponseDTO(employee);
+        return employeeDAO.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Empleado no encontrado."));
     }
-
-    /*@Override
-    public boolean validateCredentials(String email, String password) {
-        EmployeeEntity employee = employeeDAO.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Credenciales inválidas"));
-        return passwordEncoder.matches(password, employee.getPassword());
-    }*/
 }

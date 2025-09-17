@@ -2,10 +2,10 @@ package com.leoalelui.ticketsystem.domain.service.impl;
 
 import com.leoalelui.ticketsystem.domain.dto.request.TicketRecordCreateDTO;
 import com.leoalelui.ticketsystem.domain.dto.response.TicketRecordResponseDTO;
+import com.leoalelui.ticketsystem.domain.exception.ResourceNotFoundException;
 import com.leoalelui.ticketsystem.domain.service.TicketRecordService;
 import com.leoalelui.ticketsystem.persistence.dao.TicketDAO;
 import com.leoalelui.ticketsystem.persistence.dao.TicketRecordDAO;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -62,7 +62,7 @@ public class TicketRecordServiceImpl implements TicketRecordService {
     
     private void validateTicketEntityById(Long ticketId) {
         ticketDAO.findById(ticketId)
-                .orElseThrow(() -> new EntityNotFoundException("Ticket no encontrado con id: " + ticketId));
+                .orElseThrow(() -> new ResourceNotFoundException("Ticket no encontrado con id: " + ticketId));
     }
 }
 
