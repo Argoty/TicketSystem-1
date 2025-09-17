@@ -5,7 +5,7 @@ import com.leoalelui.ticketsystem.domain.dto.request.TicketUpdateStateDTO;
 import com.leoalelui.ticketsystem.domain.dto.response.AssignmentResponseDTO;
 import com.leoalelui.ticketsystem.domain.dto.response.EmployeeResponseDTO;
 import com.leoalelui.ticketsystem.domain.dto.response.TicketResponseDTO;
-import com.leoalelui.ticketsystem.domain.exception.EntityNotFoundException;
+import com.leoalelui.ticketsystem.domain.exception.ResourceNotFoundException;
 import com.leoalelui.ticketsystem.domain.service.AssignmentService;
 import com.leoalelui.ticketsystem.domain.service.EmployeeService;
 import com.leoalelui.ticketsystem.domain.service.TicketService;
@@ -62,7 +62,7 @@ public class AssignmentServiceImpl implements AssignmentService {
         AssignmentResponseDTO assignment = assignmentDAO.getByTicketId(ticketId);
 
         if (assignment == null) {
-            throw new EntityNotFoundException("El ticket con id " + ticketId + " no tiene una asignación activa.");
+            throw new ResourceNotFoundException("El ticket con id " + ticketId + " no tiene una asignación activa.");
         }
 
         return assignment;

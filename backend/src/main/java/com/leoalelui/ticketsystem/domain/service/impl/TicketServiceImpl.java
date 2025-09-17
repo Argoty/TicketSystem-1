@@ -6,10 +6,10 @@ import com.leoalelui.ticketsystem.domain.dto.request.TicketUpdateStateDTO;
 import com.leoalelui.ticketsystem.domain.dto.response.CommentResponseDTO;
 import com.leoalelui.ticketsystem.domain.dto.response.TicketRecordResponseDTO;
 import com.leoalelui.ticketsystem.domain.dto.response.TicketResponseDTO;
+import com.leoalelui.ticketsystem.domain.exception.ResourceNotFoundException;
 import com.leoalelui.ticketsystem.domain.service.TicketRecordService;
 import com.leoalelui.ticketsystem.domain.service.TicketService;
 import com.leoalelui.ticketsystem.persistence.dao.*;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,10 +30,10 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public TicketResponseDTO createTicket(TicketCreateDTO createDTO) {
         boolean existsEmployee = employeeDAO.existsById(createDTO.getEmployeeId());
-        if (!existsEmployee) throw new EntityNotFoundException("Empleado no encontrado.");
+        if (!existsEmployee) throw new ResourceNotFoundException("Empleado no encontrado.");
 
         boolean existsCategory = categoryDAO.existsById(createDTO.getCategoryId());
-        if (!existsCategory) throw new EntityNotFoundException("Categoria no encontrada.");
+        if (!existsCategory) throw new ResourceNotFoundException("Categoria no encontrada.");
 
         return ticketDAO.save(createDTO);
     }
@@ -41,7 +41,7 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public TicketResponseDTO updateState(Long id, TicketUpdateStateDTO updateStateDTO) {
         TicketResponseDTO ticket = ticketDAO.updateState(id, updateStateDTO)
-                .orElseThrow(() -> new EntityNotFoundException("Tiquete no encontrado."));
+                .orElseThrow(() -> new ResourceNotFoundException("Tiquete no encontrado."));
 
         ticketRecordService.create(new TicketRecordCreateDTO(
                 ticket.getId(),
@@ -54,15 +54,16 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public void deleteTicket(Long id) {
-        boolean existId = ticketDAO.existsById(id);
-        if (!existId) throw new EntityNotFoundException("Tiquete no encontrado.");
+        if (!ticketDAO.existsById(id)) {
+            throw new ResourceNotFoundException("Tiquete no encontrado.");
+        }
         ticketDAO.deleteById(id);
     }
 
     @Override
     public TicketResponseDTO getTicketById(Long id) {
         return ticketDAO.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Tiquete no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Tiquete no encontrado"));
     }
 
     @Override
