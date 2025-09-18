@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -66,9 +65,8 @@ public class CategoryController {
     })
     @PostMapping
     public ResponseEntity<CategoryResponseDTO> save(
-            @Parameter(hidden = true) @RequestHeader(name = "Authorization") String token,
             @Valid @RequestBody CategoryCreateDTO categoryCreateDTO) {
-        return ResponseEntity.status(201).body(null);
+        return ResponseEntity.ok(categoryService.save(categoryCreateDTO));
     }
 
     @Operation(
@@ -82,8 +80,8 @@ public class CategoryController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(
-            @Parameter(hidden = true) @RequestHeader(name = "Authorization") String token,
             @PathVariable @Parameter(description = "ID de la categoría a eliminar") Long id) {
+        categoryService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -101,6 +99,6 @@ public class CategoryController {
             @Parameter(hidden = true) @RequestHeader(name = "Authorization") String token,
             @PathVariable @Parameter(description = "ID de la categoría a actualizar") Long id,
             @Valid @RequestBody CategoryUpdateDTO categoryUpdateDTO) {
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(categoryService.update(id, categoryUpdateDTO));
     }
 }
