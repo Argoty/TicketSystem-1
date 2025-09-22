@@ -32,7 +32,8 @@ public class TicketController {
     @Operation(summary = "Crear un nuevo tiquete.", description = "Registra un nuevo tiquete en el sistema.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Tiquete creado exitosamente"),
-        @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos")
+        @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos"),
+        @ApiResponse(responseCode = "500", description = "Error interno.")
     })
     @PostMapping
     public ResponseEntity<TicketResponseDTO> createTicket(@Valid @RequestBody TicketCreateDTO ticketCreateDTO) {
@@ -44,7 +45,8 @@ public class TicketController {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Estado del tiquete actualizado."),
         @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos."),
-        @ApiResponse(responseCode = "404", description = "Tiquete no encontrado.")
+        @ApiResponse(responseCode = "404", description = "Tiquete no encontrado."),
+        @ApiResponse(responseCode = "500", description = "Error interno.")
     })
     @PutMapping("/{id}/state")
     public ResponseEntity<TicketResponseDTO> updateState(
@@ -58,7 +60,8 @@ public class TicketController {
     @Operation(summary = "Eliminar un tiquete.", description = "Elimina un tiquete por su ID.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "Tiquete eliminado exitosamente."),
-        @ApiResponse(responseCode = "404", description = "Tiquete no encontrado.")
+        @ApiResponse(responseCode = "404", description = "Tiquete no encontrado."),
+        @ApiResponse(responseCode = "500", description = "Error interno.")
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTicket(@PathVariable Long id) {
@@ -68,8 +71,9 @@ public class TicketController {
 
     @Operation(summary = "Buscar un tiquete por ID.", description = "Obtiene los datos de un tiquete específico.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Tiquete encontrado."),
-        @ApiResponse(responseCode = "404", description = "Tiquete no encontrado.")
+        @ApiResponse(responseCode = "200", description = "Tiquete encontrado exitosamente."),
+        @ApiResponse(responseCode = "404", description = "Tiquete no encontrado."),
+        @ApiResponse(responseCode = "500", description = "Error interno.")
     })
     @GetMapping("/{id}")
     public ResponseEntity<TicketResponseDTO> getTicketById(@PathVariable Long id) {
@@ -79,7 +83,9 @@ public class TicketController {
 
     @Operation(summary = "Listar todos los tickets.", description = "Obtiene una lista de todos los tiquetes registrados en el sistema.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Lista obtenida exitosamente.")
+        @ApiResponse(responseCode = "200", description = "Lista obtenida exitosamente."),
+        @ApiResponse(responseCode = "404", description = "No se encontraron tiquetes."),
+        @ApiResponse(responseCode = "500", description = "Error interno.")
     })
     @GetMapping
     public ResponseEntity<List<TicketResponseDTO>> getAllTickets() {
@@ -90,7 +96,8 @@ public class TicketController {
     @Operation(summary = "Listar tickets por estado", description = "Obtiene una lista de tiquetes filtrados por estado.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Lista obtenida exitosamente."),
-        @ApiResponse(responseCode = "404", description = "No se encontraron tiquetes con ese estado.")
+        @ApiResponse(responseCode = "404", description = "No se encontraron tiquetes con ese estado."),
+        @ApiResponse(responseCode = "500", description = "Error interno.")
     })
     @GetMapping("/state/{state}")
     public ResponseEntity<List<TicketResponseDTO>> getTicketsByState(@PathVariable State state) {
@@ -101,7 +108,10 @@ public class TicketController {
     @Operation(summary = "Listar comentarios de un ticket", description = "Obtiene todos los comentarios asociados a un tiquete.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Comentarios obtenidos exitosamente."),
-        @ApiResponse(responseCode = "404", description = "Tiquete no encontrado.")
+        @ApiResponse(responseCode = "404", description = "No se encontraron comentarios para ese tiquete."),
+        @ApiResponse(responseCode = "404", description = "Tiquete no encontrado."),
+        @ApiResponse(responseCode = "500", description = "Error interno.")
+
     })
     @GetMapping("/{id}/comments")
     public ResponseEntity<List<CommentResponseDTO>> getAllCommentsByTicketId(@PathVariable Long id) {
