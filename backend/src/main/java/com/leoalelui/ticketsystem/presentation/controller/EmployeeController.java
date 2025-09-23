@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +29,8 @@ public class EmployeeController {
     @Operation(summary = "Crear un nuevo empleado", description = "Registra un nuevo empleado en el sistema.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Empleado creado exitosamente."),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos.")
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos."),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
     @PostMapping
     public ResponseEntity<EmployeeResponseDTO> createEmployee(
@@ -40,11 +43,12 @@ public class EmployeeController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Empleado actualizado exitosamente."),
             @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos."),
-            @ApiResponse(responseCode = "404", description = "Empleado no encontrado.")
+            @ApiResponse(responseCode = "404", description = "Empleado no encontrado."),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
     @PutMapping("/{id}")
     public ResponseEntity<EmployeeResponseDTO> updateEmployee(
-            @PathVariable Long id,
+            @PathVariable @Positive Long id,
             @Valid @RequestBody EmployeeUpdateDTO employeeUpdateDTO
     ) {
         EmployeeResponseDTO employeeUpdated = employeeService.updateEmployee(id, employeeUpdateDTO);
@@ -54,10 +58,11 @@ public class EmployeeController {
     @Operation(summary = "Eliminar un empleado", description = "Elimina un empleado por su ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Empleado eliminado exitosamente."),
-            @ApiResponse(responseCode = "404", description = "Empleado no encontrado.")
+            @ApiResponse(responseCode = "404", description = "Empleado no encontrado."),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteEmployee(@PathVariable @Positive Long id) {
         employeeService.deleteEmployee(id);
         return ResponseEntity.noContent().build(); // 204 No Content
     }
@@ -65,17 +70,20 @@ public class EmployeeController {
     @Operation(summary = "Buscar un empleado por ID", description = "Obtiene los datos de un empleado específico mediante su ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Empleado encontrado."),
-            @ApiResponse(responseCode = "404", description = "Empleado no encontrado.")
+            @ApiResponse(responseCode = "404", description = "Empleado no encontrado."),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<EmployeeResponseDTO> getEmployeeById(@PathVariable Long id) {
+    public ResponseEntity<EmployeeResponseDTO> getEmployeeById(@PathVariable @Positive Long id) {
         EmployeeResponseDTO employeeFound = employeeService.getEmployeeById(id);
         return ResponseEntity.ok(employeeFound); // 200 OK
     }
 
     @Operation(summary = "Listar todos los empleados", description = "Obtiene una lista con todos los empleados registrados en el sistema.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista obtenida exitosamente.")
+            @ApiResponse(responseCode = "200", description = "Lista obtenida exitosamente (puede estar vacía)."),
+            @ApiResponse(responseCode = "400", description = "Parámetros de consulta inválidos."),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
     @GetMapping
     public ResponseEntity<List<EmployeeResponseDTO>> getAllEmployees() {
@@ -86,10 +94,12 @@ public class EmployeeController {
     @Operation(summary = "Buscar un empleado por email", description = "Obtiene los datos de un empleado a partir de su correo electrónico.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Empleado encontrado."),
-            @ApiResponse(responseCode = "404", description = "Empleado no encontrado.")
+            @ApiResponse(responseCode = "400", description = "Formato de email inválido."),
+            @ApiResponse(responseCode = "404", description = "Empleado no encontrado."),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
     @GetMapping("/email/{email}")
-    public ResponseEntity<EmployeeResponseDTO> getEmployeeByEmail(@PathVariable String email) {
+    public ResponseEntity<EmployeeResponseDTO> getEmployeeByEmail(@PathVariable @Email String email) {
         EmployeeResponseDTO employeeFound = employeeService.getEmployeeByEmail(email);
         return ResponseEntity.ok(employeeFound); // 200 OK
     }
