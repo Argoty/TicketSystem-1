@@ -13,8 +13,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,13 +46,13 @@ public class TicketController {
     @Operation(summary = "Actualizar estado de un tiquete.", description = "Modifica el estado de un tiquete existente (ej: ABIERTO, EN_PROCESO, RESUELTO, CERRADO).")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Estado del tiquete actualizado."),
-        @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos."),
+        @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos o transición de estado no válida."),
         @ApiResponse(responseCode = "404", description = "Tiquete no encontrado."),
-        @ApiResponse(responseCode = "500", description = "Error interno.")
+        @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
     @PutMapping("/{id}/state")
     public ResponseEntity<TicketResponseDTO> updateState(
-            @PathVariable Long id,
+            @PathVariable @Positive Long id,
             @RequestBody TicketUpdateStateDTO ticketUpdateStateDTO
     ) {
         TicketResponseDTO updated = ticketService.updateState(id, ticketUpdateStateDTO);
@@ -64,7 +66,7 @@ public class TicketController {
         @ApiResponse(responseCode = "500", description = "Error interno.")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTicket(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTicket(@PathVariable @Positive Long id) {
         ticketService.deleteTicket(id);
         return ResponseEntity.noContent().build(); // 204 No Content
     }
@@ -76,16 +78,16 @@ public class TicketController {
         @ApiResponse(responseCode = "500", description = "Error interno.")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<TicketResponseDTO> getTicketById(@PathVariable Long id) {
+    public ResponseEntity<TicketResponseDTO> getTicketById(@PathVariable @Positive Long id) {
         TicketResponseDTO ticket = ticketService.getTicketById(id);
         return ResponseEntity.ok(ticket); // 200 OK
     }
 
     @Operation(summary = "Listar todos los tickets.", description = "Obtiene una lista de todos los tiquetes registrados en el sistema.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Lista obtenida exitosamente."),
-        @ApiResponse(responseCode = "404", description = "No se encontraron tiquetes."),
-        @ApiResponse(responseCode = "500", description = "Error interno.")
+        @ApiResponse(responseCode = "200", description = "Lista obtenida exitosamente (puede estar vacía)."),
+        @ApiResponse(responseCode = "400", description = "Parámetros de consulta inválidos."),
+        @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
     @GetMapping
     public ResponseEntity<List<TicketResponseDTO>> getAllTickets() {
@@ -95,9 +97,9 @@ public class TicketController {
 
     @Operation(summary = "Listar tickets por estado", description = "Obtiene una lista de tiquetes filtrados por estado.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Lista obtenida exitosamente."),
-        @ApiResponse(responseCode = "404", description = "No se encontraron tiquetes con ese estado."),
-        @ApiResponse(responseCode = "500", description = "Error interno.")
+        @ApiResponse(responseCode = "200", description = "Lista obtenida exitosamente (puede estar vacía)."),
+        @ApiResponse(responseCode = "400", description = "Estado inválido o parámetros de consulta incorrectos."),
+        @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
     @GetMapping("/state/{state}")
     public ResponseEntity<List<TicketResponseDTO>> getTicketsByState(@PathVariable State state) {
@@ -107,14 +109,13 @@ public class TicketController {
 
     @Operation(summary = "Listar comentarios de un ticket", description = "Obtiene todos los comentarios asociados a un tiquete.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Comentarios obtenidos exitosamente."),
-        @ApiResponse(responseCode = "404", description = "No se encontraron comentarios para ese tiquete."),
+        @ApiResponse(responseCode = "200", description = "Comentarios obtenidos exitosamente (puede estar vacía)."),
         @ApiResponse(responseCode = "404", description = "Tiquete no encontrado."),
-        @ApiResponse(responseCode = "500", description = "Error interno.")
+        @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
 
     })
     @GetMapping("/{id}/comments")
-    public ResponseEntity<List<CommentResponseDTO>> getAllCommentsByTicketId(@PathVariable Long id) {
+    public ResponseEntity<List<CommentResponseDTO>> getAllCommentsByTicketId(@PathVariable @Positive Long id) {
         List<CommentResponseDTO> comments = ticketService.getAllCommentsByTicketId(id);
         return ResponseEntity.ok(comments);
     }
@@ -122,12 +123,19 @@ public class TicketController {
     @Operation(summary = "Listar registros de un tiquete", description = "Obtiene el historial de registros de un tiquete.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Historial de registros obtenido exitosamente."),
-        @ApiResponse(responseCode = "400", description = "Fechas invalidas."),
-        @ApiResponse(responseCode = "404", description = "Tiquete no encontrado.")
+        @ApiResponse(responseCode = "400", description = "Fechas inválidas o parámetros de consulta incorrectos."),
+        @ApiResponse(responseCode = "404", description = "Tiquete no encontrado."),
+        @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
     @GetMapping("/{id}/tickets-record")
-    public ResponseEntity<List<TicketRecordResponseDTO>> getAllTicketRecordsByTicketId(@PathVariable Long id, @RequestParam(value = "from", required = false) @Parameter(description = "Fecha de inicio del rango (formato yyyy-MM-dd)") LocalDate from,
-            @RequestParam(value = "to", required = false) @Parameter(description = "Fecha de fin del rango (formato yyyy-MM-dd)") LocalDate to) {
+    public ResponseEntity<List<TicketRecordResponseDTO>> getAllTicketRecordsByTicketId(
+            @PathVariable @Positive Long id, 
+            @RequestParam(value = "from", required = false) 
+            @Parameter(description = "Fecha de inicio del rango (formato yyyy-MM-dd)") 
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam(value = "to", required = false) 
+            @Parameter(description = "Fecha de fin del rango (formato yyyy-MM-dd)") 
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
         List<TicketRecordResponseDTO> ticketsRecord = ticketService.getAllTicketRecordsByTicketId(id, from, to);
         return ResponseEntity.ok(ticketsRecord);
     }
