@@ -14,6 +14,7 @@ import com.leoalelui.ticketsystem.domain.service.EmployeeService;
 import com.leoalelui.ticketsystem.domain.service.TicketService;
 import com.leoalelui.ticketsystem.domain.service.NotificationService;
 import com.leoalelui.ticketsystem.persistence.dao.AssignmentDAO;
+import com.leoalelui.ticketsystem.persistence.enums.Role;
 import com.leoalelui.ticketsystem.persistence.enums.State;
 
 import lombok.RequiredArgsConstructor;
@@ -103,8 +104,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     private void validateEmployeeAgent(EmployeeResponseDTO employee) {
-        String role = employee.getRole() != null ? employee.getRole().toString() : null;
-        if (role == null || !role.equalsIgnoreCase("AGENTE")) {
+        if (employee.getRole() != Role.AGENT) {
             throw new InvalidRoleException("El empleado con id " + employee.getId() + " no tiene el rol de AGENTE.");
         }
     }

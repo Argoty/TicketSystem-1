@@ -9,6 +9,8 @@ import com.leoalelui.ticketsystem.persistence.dao.EmployeeDAO;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,13 +18,15 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
-
+    private final PasswordEncoder passwordEncoder;
     private final EmployeeDAO employeeDAO;
 
     @Override
     @Transactional
     public EmployeeResponseDTO createEmployee(EmployeeCreateDTO employeeCreateDTO) {
         validateEmailNotExists(employeeCreateDTO.getEmail());
+        String encodedPassword = passwordEncoder.encode(employeeCreateDTO.getPassword());
+        employeeCreateDTO.setPassword(encodedPassword);
         return employeeDAO.save(employeeCreateDTO);
     }
 

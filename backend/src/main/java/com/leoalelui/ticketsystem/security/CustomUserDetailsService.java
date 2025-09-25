@@ -1,10 +1,8 @@
 package com.leoalelui.ticketsystem.security;
 
 import java.util.Optional;
-import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,7 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Empleado no encontrado");
         }
         EmployeeEntity employeeEntity = employee.get();
-        return new User(employeeEntity.getEmail(), employeeEntity.getPassword(), Collections.emptyList());
+        return new EmployeeUserDetails(employeeEntity);
     }
 
 }

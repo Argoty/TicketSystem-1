@@ -26,6 +26,9 @@ report.*
 # =====================================================
 # Backend – Spring Boot (Gradle)
 # =====================================================
+/backend/bin/
+/backend/build/
+/backend/out/
 /backend/build/
 /backend/.gradle/
 
