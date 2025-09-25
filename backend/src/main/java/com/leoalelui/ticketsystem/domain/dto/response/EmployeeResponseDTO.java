@@ -2,6 +2,9 @@ package com.leoalelui.ticketsystem.domain.dto.response;
 
 import lombok.Data;
 import lombok.AllArgsConstructor;
+
+import com.leoalelui.ticketsystem.persistence.enums.Role;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Data
@@ -19,7 +22,7 @@ public class EmployeeResponseDTO {
     private String email;
 
     @Schema(description = "Rol que desempeña el empleado", example = "ADMIN")
-    private String role;
+    private Role role;
 
     @Schema(description = "Departamento al que pertenece el empleado", example = "Soporte Técnico")
     private String department;

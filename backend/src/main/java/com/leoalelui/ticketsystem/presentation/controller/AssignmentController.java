@@ -16,6 +16,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,6 +33,8 @@ import java.util.List;
 public class AssignmentController {
 
     private final AssignmentService assignmentService;
+
+    
     @Operation(summary = "Crear asignación", description = "Crea una nueva asignación de un ticket a un empleado.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Asignación creada exitosamente",
@@ -40,6 +43,7 @@ public class AssignmentController {
         @ApiResponse(responseCode = "401", description = "No autorizado"),
         @ApiResponse(responseCode = "403", description = "Prohibido - rol insuficiente")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<AssignmentResponseDTO> createAssignment(
             @Valid @RequestBody AssignmentCreateDTO assignmentCreateDTO) {
