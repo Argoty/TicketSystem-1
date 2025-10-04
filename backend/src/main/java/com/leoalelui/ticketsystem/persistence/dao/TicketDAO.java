@@ -7,6 +7,8 @@ import com.leoalelui.ticketsystem.persistence.entity.TicketEntity;
 import com.leoalelui.ticketsystem.persistence.enums.State;
 import com.leoalelui.ticketsystem.persistence.mapper.TicketMapper;
 import com.leoalelui.ticketsystem.persistence.repository.TicketRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -21,11 +23,16 @@ public class TicketDAO {
     private final TicketRepository ticketRepository;
     private final TicketMapper ticketMapper;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     public TicketResponseDTO save(TicketCreateDTO createDTO) {
         TicketEntity entity = ticketMapper.toEntity(createDTO);
         entity.setState(State.ABIERTO);
         entity.setCreationDate(LocalDateTime.now());
         TicketEntity saved = ticketRepository.save(entity);
+        entityManager.flush();
+        entityManager.refresh(saved);
         return ticketMapper.toResponseDTO(saved);
     }
 

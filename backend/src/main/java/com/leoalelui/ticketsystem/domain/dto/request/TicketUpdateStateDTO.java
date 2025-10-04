@@ -8,6 +8,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class TicketUpdateStateDTO {
-    @NotNull(message = "El estado no puede ser nulo")
+    @NotNull(message = "El estado no puede ser nulo o vacio")
     private State state;
 }
