@@ -35,7 +35,7 @@ public class TicketController {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Tiquete creado exitosamente"),
         @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos"),
-        @ApiResponse(responseCode = "500", description = "Error interno.")
+        @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
     @PostMapping
     public ResponseEntity<TicketResponseDTO> createTicket(@Valid @RequestBody TicketCreateDTO ticketCreateDTO) {
@@ -53,7 +53,7 @@ public class TicketController {
     @PutMapping("/{id}/state")
     public ResponseEntity<TicketResponseDTO> updateState(
             @PathVariable @Positive Long id,
-            @RequestBody TicketUpdateStateDTO ticketUpdateStateDTO
+            @Valid @RequestBody TicketUpdateStateDTO ticketUpdateStateDTO
     ) {
         TicketResponseDTO updated = ticketService.updateState(id, ticketUpdateStateDTO);
         return ResponseEntity.ok(updated); // 200 OK
@@ -63,7 +63,7 @@ public class TicketController {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "Tiquete eliminado exitosamente."),
         @ApiResponse(responseCode = "404", description = "Tiquete no encontrado."),
-        @ApiResponse(responseCode = "500", description = "Error interno.")
+        @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTicket(@PathVariable @Positive Long id) {
@@ -75,7 +75,7 @@ public class TicketController {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Tiquete encontrado exitosamente."),
         @ApiResponse(responseCode = "404", description = "Tiquete no encontrado."),
-        @ApiResponse(responseCode = "500", description = "Error interno.")
+        @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
     @GetMapping("/{id}")
     public ResponseEntity<TicketResponseDTO> getTicketById(@PathVariable @Positive Long id) {
