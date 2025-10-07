@@ -59,4 +59,9 @@ public class GlobalHandlerException {
         return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(ResourceAlreadyExistsException.class)
+    public ResponseEntity<ErrorMessage> handleResourceAlreadyExistsException(ResourceAlreadyExistsException e) {
+        ErrorMessage errorMessage = new ErrorMessage(e.getMessage());
+        return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
+    }
 }
