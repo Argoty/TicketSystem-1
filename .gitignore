@@ -50,6 +50,8 @@ report.*
 /backend/.nb-gradle/
 /backend/nb-configuration.xml
 
+/backend/ajcore.*.txt
+
 # =====================================================
 # Frontend – Angular (npm)
 # =====================================================
