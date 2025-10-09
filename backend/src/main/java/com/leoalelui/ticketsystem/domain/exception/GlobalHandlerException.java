@@ -7,9 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -70,6 +70,33 @@ public class GlobalHandlerException {
     @ExceptionHandler(DateTimeParseException.class)
     public ResponseEntity<ErrorMessage> handleDateTimeParseException(DateTimeParseException ex) {
         ErrorMessage errorMessage = new ErrorMessage("Formato de fecha inválido. Usa el formato yyyy-MM-dd.");
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
+    // Para validar enums inválidos en path variables
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorMessage> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+        String parameterName = ex.getName();
+        String invalidValue = ex.getValue() != null ? ex.getValue().toString() : "null";
+        Class<?> requiredType = ex.getRequiredType();
+        
+        String errorMsg;
+        if (requiredType != null && requiredType.isEnum()) {
+            Object[] enumConstants = requiredType.getEnumConstants();
+            StringBuilder validValues = new StringBuilder();
+            for (int i = 0; i < enumConstants.length; i++) {
+                validValues.append(enumConstants[i]);
+                if (i < enumConstants.length - 1) {
+                    validValues.append(", ");
+                }
+            }
+            errorMsg = String.format("Valor inválido '%s' para el parámetro '%s'. Valores válidos: %s", 
+                    invalidValue, parameterName, validValues.toString());
+        } else {
+            errorMsg = String.format("Valor inválido '%s' para el parámetro '%s'", invalidValue, parameterName);
+        }
+        
+        ErrorMessage errorMessage = new ErrorMessage(errorMsg);
         return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
 }
