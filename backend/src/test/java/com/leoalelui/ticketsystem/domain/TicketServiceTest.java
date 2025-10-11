@@ -436,6 +436,55 @@ public class TicketServiceTest {
         verify(ticketDAO, never()).updateState(anyLong(), any());
     }
 
+    @Test
+    @DisplayName("UPDATE STATE - Error al actualizar debe lanzar ResourceNotFoundException")
+    void updateState_UpdateFails_ShouldThrowException() {
+        // ARRANGE
+        TicketUpdateStateDTO updateDTO = new TicketUpdateStateDTO(State.EN_PROGRESO);
+
+        when(ticketDAO.existsById(validTicketId)).thenReturn(true);
+        when(ticketDAO.findById(validTicketId)).thenReturn(Optional.of(validTicketResponse));
+        when(ticketDAO.updateState(validTicketId, updateDTO)).thenReturn(Optional.empty());
+
+        // ACT & ASSERT
+        assertThatThrownBy(() -> ticketService.updateState(validTicketId, updateDTO))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessageContaining("Error al actualizar ticket con ID");
+
+        verify(ticketRecordService, times(1)).create(any(TicketRecordCreateDTO.class));
+        verify(ticketDAO, times(1)).updateState(validTicketId, updateDTO);
+        verify(notificationService, never()).create(any());
+    }
+
+    @Test
+    @DisplayName("UPDATE STATE - Transición inválida RESUELTO -> ABIERTO debe lanzar InvalidStateException")
+    void updateState_InvalidTransitionResueltoToAbierto_ShouldThrowException() {
+        // ARRANGE
+        TicketResponseDTO ticketResuelto = new TicketResponseDTO(
+                validTicketId,
+                validEmployeeId,
+                validCategory,
+                "Ticket",
+                "Descripción",
+                Priority.ALTA,
+                State.RESUELTO,
+                LocalDateTime.now(),
+                LocalDateTime.now());
+
+        TicketUpdateStateDTO updateDTO = new TicketUpdateStateDTO(State.ABIERTO);
+
+        when(ticketDAO.existsById(validTicketId)).thenReturn(true);
+        when(ticketDAO.findById(validTicketId)).thenReturn(Optional.of(ticketResuelto));
+
+        // ACT & ASSERT
+        assertThatThrownBy(() -> ticketService.updateState(validTicketId, updateDTO))
+                .isInstanceOf(InvalidStateException.class)
+                .hasMessageContaining("solo se puede cambiar a 'Cerrado' o 'En progreso'");
+
+        verify(ticketRecordService, never()).create(any());
+        verify(ticketDAO, never()).updateState(anyLong(), any());
+    }
+
     // ==================== DELETE TICKET TESTS ====================
 
     @Test
