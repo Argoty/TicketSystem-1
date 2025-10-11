@@ -55,7 +55,7 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
-	finalizedBy jacocoTestReport, allureReport  // tras los test se generan los reportes con JaCoCo + Allure
+	finalizedBy jacocoTestReport  // tras los test se generan los reportes con JaCoCo
 }
 
 jacoco {
@@ -84,7 +84,7 @@ jacocoTestCoverageVerification {
 allure {
 	version = "2.24.0"     // versión de Allure Report
 	autoconfigure = true   // configura automáticamente JUnit 5 listener
-	aspectjweaver = true   // necesario para anotaciones @Step, @Attachment
+	aspectjweaver = false  // Deshabilitado para evitar conflictos con JaCoCo
 }
 
 
@@ -98,7 +98,7 @@ sonarqube {
 		property "sonar.projectKey", "ticket-system"
 		property "sonar.projectName", "Ticket System"
 		property "sonar.host.url", "http://localhost:9000"
-		property "sonar.login", "sqa_57dda66134a370c356d7ff12748113f0cc1fb762"
+		property "sonar.login", "squ_2b0ccf6a0850e0a73936a805e86609adad6d2cd0   "
 		property "sonar.sources", "src/main/java"
 		property "sonar.tests", "src/test/java"
 		property "sonar.java.binaries", "build/classes/java/main"
