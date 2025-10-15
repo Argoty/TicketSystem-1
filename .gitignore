@@ -51,6 +51,7 @@ report.*
 
 /backend/ajcore.*.txt
 /backend/allure-results/
+/backend/docker-compose-db.yml
 
 # =====================================================
 # Frontend – Angular (npm)
@@ -77,5 +78,13 @@ report.*
 /frontend/.DS_Store
 /frontend/Thumbs.db
 
+# Archivos temporales de VSCode y sistema
+/frontend/.vscode/
+/frontend/.history/
+/frontend/.eslintcache
 
-
+# =====================================================
+# Documentación y archivos del sistema
+# =====================================================
+*.goutputstream*
+~$*
