@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 /**
  * DTO de respuesta para comentarios
- * @author Leonardo Argoty
+ * @author Leonardo Argoty, Alejandro Ballesteros
  */
 @Data
 @AllArgsConstructor
@@ -17,8 +17,8 @@ public class CommentResponseDTO {
     @Schema(description = "Identificador único del comentario", example = "101")
     private Long id;
 
-    @Schema(description = "Identificador único del ticket al que pertenece el comentario", example = "55")
-    private Long ticketId;
+    @Schema(description = "Resumen del ticket al que pertenece")
+    private TicketResponseDTO ticket;
 
     @Schema(description = "Información del empleado que realizó el comentario")
     private EmployeeResponseDTO employee;

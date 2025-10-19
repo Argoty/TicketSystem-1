@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/v1/evidencias")
+@RequestMapping("api/v1/evidences")
 @Tag(name = "Evidencias", description = "API para la gestión de evidencias (imágenes) asociadas a los tickets.")
 public class EvidenceController {
 
