@@ -15,7 +15,7 @@ public class EvidenceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn (name = "ticket_id", nullable = false)

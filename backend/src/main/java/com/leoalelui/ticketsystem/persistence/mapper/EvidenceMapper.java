@@ -15,7 +15,6 @@ public interface EvidenceMapper {
     @Mapping(target = "ticket", source = "ticketId", qualifiedByName = "ticketIdToEntity")
     EvidenceEntity toEntity(EvidenceCreateDTO dto);
 
-    @Mapping(target = "ticketId", source = "ticket.id")
     EvidenceResponseDTO toResponseDTO(EvidenceEntity entity);
 
     List<EvidenceResponseDTO> toDTOList(List<EvidenceEntity> entities);
