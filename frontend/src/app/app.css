@@ -1,0 +1,359 @@
+/* Container principal */
+.login-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #f5f5f5;
+}
+
+/* Left Side - Illustration Section */
+.illustration-section {
+  flex: 1;
+  position: relative;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Forma orgánica gris */
+.organic-shape {
+  width: 500px;
+  height: 500px;
+  background-color: #b8b5ad;
+  border-radius: 45% 55% 60% 40% / 50% 45% 55% 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+/* Contenedor de herramientas */
+.tools-container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.tool-screwdriver,
+.tool-wrench {
+  position: absolute;
+  width: 120px;
+  height: auto;
+}
+
+.tool-screwdriver {
+  top: 0;
+  left: 10px;
+  transform: rotate(-25deg);
+}
+
+.tool-wrench {
+  top: 20px;
+  right: 0;
+  transform: rotate(25deg);
+}
+
+/* Círculos decorativos */
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  background-color: #d9d7d2;
+}
+
+.circle-1 {
+  width: 120px;
+  height: 120px;
+  top: 15%;
+  left: 15%;
+}
+
+.circle-2 {
+  width: 80px;
+  height: 80px;
+  top: 10%;
+  left: 35%;
+}
+
+.circle-3 {
+  width: 50px;
+  height: 50px;
+  top: 20%;
+  left: 25%;
+}
+
+.circle-4 {
+  width: 100px;
+  height: 100px;
+  bottom: 25%;
+  right: 15%;
+}
+
+.circle-5 {
+  width: 60px;
+  height: 60px;
+  bottom: 15%;
+  left: 10%;
+}
+
+.circle-6 {
+  width: 90px;
+  height: 90px;
+  bottom: 10%;
+  left: 25%;
+}
+
+.circle-7 {
+  width: 70px;
+  height: 70px;
+  top: 45%;
+  left: 5%;
+}
+
+/* Right Side - Form Section */
+.form-section {
+  flex: 1;
+  background: linear-gradient(135deg, #8b9d8e 0%, #7a8d7d 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  clip-path: ellipse(100% 100% at 100% 50%);
+}
+
+.form-wrapper {
+  width: 100%;
+  max-width: 400px;
+  padding: 0 20px;
+}
+
+/* Form Title */
+.form-title {
+  color: #e8e8e3;
+  font-size: 3rem;
+  font-weight: 300;
+  margin-bottom: 50px;
+  text-align: left;
+}
+
+/* Form */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* Form Groups */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-label {
+  color: #e8e8e3;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+/* Input Wrapper */
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 0;
+  color: #b8b5ad;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.form-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #a8a599;
+  padding: 12px 0 12px 35px;
+  color: #e8e8e3;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.form-input::placeholder {
+  color: #b8b5ad;
+}
+
+.form-input:focus {
+  border-bottom-color: #e8e8e3;
+}
+
+/* Forgot Password */
+.forgot-password-wrapper {
+  text-align: right;
+  margin-top: -10px;
+}
+
+.forgot-password-link {
+  color: #4a5a4d;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.forgot-password-link:hover {
+  color: #3a4a3d;
+}
+
+/* Buttons */
+.btn {
+  width: 100%;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #4a5a4d;
+  color: #e8e8e3;
+}
+
+.btn-primary:hover {
+  background-color: #3a4a3d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary {
+  background-color: #4a5a4d;
+  color: #e8e8e3;
+}
+
+.btn-secondary:hover {
+  background-color: #3a4a3d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #a8a599;
+}
+
+.divider-text {
+  padding: 0 15px;
+  color: #e8e8e3;
+  font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .organic-shape {
+    width: 400px;
+    height: 400px;
+  }
+
+  .tools-container {
+    width: 160px;
+    height: 160px;
+  }
+
+  .tool-screwdriver,
+  .tool-wrench {
+    width: 100px;
+  }
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+  }
+
+  .illustration-section {
+    min-height: 40vh;
+    clip-path: ellipse(100% 100% at 50% 0%);
+  }
+
+  .form-section {
+    clip-path: none;
+    min-height: 60vh;
+  }
+
+  .organic-shape {
+    width: 300px;
+    height: 300px;
+  }
+
+  .tools-container {
+    width: 120px;
+    height: 120px;
+  }
+
+  .tool-screwdriver,
+  .tool-wrench {
+    width: 80px;
+  }
+
+  .circle-1 { width: 80px; height: 80px; }
+  .circle-2 { width: 60px; height: 60px; }
+  .circle-3 { width: 40px; height: 40px; }
+  .circle-4 { width: 70px; height: 70px; }
+  .circle-5 { width: 50px; height: 50px; }
+  .circle-6 { width: 60px; height: 60px; }
+  .circle-7 { width: 50px; height: 50px; }
+
+  .form-title {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-section {
+    padding: 20px;
+  }
+
+  .form-wrapper {
+    max-width: 100%;
+  }
+
+  .form-title {
+    font-size: 2rem;
+    margin-bottom: 30px;
+  }
+
+  .organic-shape {
+    width: 250px;
+    height: 250px;
+  }
+
+  .tools-container {
+    width: 100px;
+    height: 100px;
+  }
+
+  .tool-screwdriver,
+  .tool-wrench {
+    width: 60px;
+  }
+}
