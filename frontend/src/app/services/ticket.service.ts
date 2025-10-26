@@ -11,7 +11,7 @@ export interface TicketResponseDTO {
     title: string;
     description: string;
     priority: string;
-    status: string;
+    state: string;
     creationDate: string;
     closingDate: string;
 }
