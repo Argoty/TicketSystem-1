@@ -78,6 +78,7 @@ export class TicketPageComponent {
           name: emp.name,
           email: emp.email
         }));
+        console.log('Available agents:', this.availableAgents);
       },
       error: (err) => {
         console.error('Error loading agents:', err);

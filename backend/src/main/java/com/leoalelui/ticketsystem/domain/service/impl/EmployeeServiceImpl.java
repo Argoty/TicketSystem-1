@@ -56,7 +56,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<EmployeeResponseDTO> getAllEmployees(Role role) {
-        return employeeDAO.findAll(role != null ? role.getDisplayName() : null);
+        return employeeDAO.findAll(role);
     }
 
     @Override

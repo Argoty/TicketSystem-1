@@ -14,7 +14,7 @@
     [isOpen]="isModalOpen"
     [mode]="modalMode"
     [agents]="availableAgents"
-    [currentAgentId]="ticketData?.assignment?.agent?.id"
+    [currentAgentId]="ticketData.assignment?.agent?.id"
     (close)="closeModal()"
     (confirm)="onConfirmAgent($event)"
   ></app-assign-agent-modal>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -32,5 +32,9 @@ export class EmployeeService {
 
   updateEmployee(id: number, employeeData: Partial<EmployeeResponseDTO>): Observable<EmployeeResponseDTO> {
     return this.http.put<EmployeeResponseDTO>(`${this.apiUrl}/${id}`, employeeData, { headers: this.getHeaders() });
+  }
+  getAgents() : Observable<EmployeeResponseDTO[]> {
+    const params = new HttpParams().set('role', 'AGENT');
+    return this.http.get<EmployeeResponseDTO[]>(`${this.apiUrl}`, { headers: this.getHeaders(), params });
   }
 }
