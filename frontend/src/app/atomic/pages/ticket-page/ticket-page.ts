@@ -64,8 +64,6 @@ export class TicketPageComponent {
         console.error('Invalid ticket ID');
       }
     });
-
-    this.loadAvailableAgents();
   }
 
   loadAvailableAgents() {
@@ -74,9 +72,9 @@ export class TicketPageComponent {
         this.availableAgents = agents.map(emp => ({
           id: emp.id,
           name: emp.name,
-          email: emp.email
+          email: emp.email,
+          department: emp.department
         }));
-        console.log('Available agents:', this.availableAgents);
       },
       error: (err) => {
         console.error('Error loading agents:', err);
@@ -92,7 +90,6 @@ export class TicketPageComponent {
         if (newState == 'CERRADO' || newState == 'RESUELTO') {
           this.ticketData.ticket.closingDate = updatedTicket.closingDate;
         }
-        console.log('Ticket state updated:', updatedTicket);
       },
       error: (err) => {
         console.error('Error updating ticket state:', err);
@@ -103,11 +100,13 @@ export class TicketPageComponent {
   onAssign() {
     this.modalMode = 'assign';
     this.isModalOpen = true;
+    this.loadAvailableAgents();
   }
 
   onReassign() {
     this.modalMode = 'reassign';
     this.isModalOpen = true;
+    this.loadAvailableAgents();
   }
 
   onConfirmAgent(agentId: number) {
@@ -120,7 +119,6 @@ export class TicketPageComponent {
             date: assignment.assignmentDate
           };
           this.ticketData.ticket.state = 'EN_PROGRESO';
-          console.log('Agente asignado:', assignment);
         },
         error: (err) => {
           console.error('Error asignando agente:', err);
@@ -134,7 +132,6 @@ export class TicketPageComponent {
             agent: assignment.employee,
             date: assignment.assignmentDate
           };
-          console.log('Agente reasignado:', assignment);
         },
         error: (err) => {
           console.error('Error reasignando agente:', err);

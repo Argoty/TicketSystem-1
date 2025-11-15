@@ -7,13 +7,14 @@ import { FormsModule } from '@angular/forms';
 export interface Agent {
   id: number;
   name: string;
-  email?: string;
+  email: string;
+  department: string;
 }
 
 @Component({
   selector: 'app-assign-agent-modal',
   standalone: true,
-  imports: [CommonModule, ButtonComponent, SelectComponent, FormsModule],
+  imports: [CommonModule, ButtonComponent, SelectComponent, FormsModule ],
   templateUrl: './assign-agent-modal.html',
   styleUrls: ['./assign-agent-modal.css'],
 })
@@ -22,6 +23,7 @@ export class AssignAgentModalComponent implements OnChanges {
   @Input() mode: 'assign' | 'reassign' = 'assign';
   @Input() agents: Agent[] = [];
   @Input() currentAgentId?: number;
+
   @Output() close = new EventEmitter<void>();
   @Output() confirm = new EventEmitter<number>();
 
@@ -47,7 +49,7 @@ export class AssignAgentModalComponent implements OnChanges {
   updateAgentOptions(): void {
     this.agentOptions = this.agents.map((agent) => ({
       value: agent.id,
-      label: agent.email ? `${agent.name} - ${agent.email}` : agent.name,
+      label: agent.department ? `${agent.name} - ${agent.department}` : agent.name,
     }));
   }
 
@@ -60,10 +62,6 @@ export class AssignAgentModalComponent implements OnChanges {
       this.confirm.emit(this.selectedAgentId);
       this.closeModal();
     }
-  }
-
-  onCancel(): void {
-    this.closeModal();
   }
 
   closeModal(): void {

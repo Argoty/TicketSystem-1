@@ -20,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -95,7 +94,6 @@ public class EmployeeController {
             @ApiResponse(responseCode = "400", description = "Parámetros de consulta inválidos."),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<EmployeeResponseDTO>> getAllEmployees(@RequestParam(value="role", required = false) @Parameter(description = "Parámetro de filtro por rol") Role role) {
         List<EmployeeResponseDTO> employees = employeeService.getAllEmployees(role);

@@ -16,28 +16,14 @@
           <i class="fas fa-user-plus"></i>
           {{ modalTitle }}
         </h3>
-        <button
-          type="button"
+        <button-atom
+          [type]="'button'"
+          [size]="'sm'"
+          [extraClass]="'!p-2 !bg-white/10 hover:!bg-white/20 border-0 text-white'"
           (click)="closeModal()"
-          class="text-white/80 hover:text-white hover:bg-white/20 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center transition-all"
         >
-          <svg
-            class="w-4 h-4"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 14 14"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-            />
-          </svg>
-          <span class="sr-only">Cerrar modal</span>
-        </button>
+          <i class="fas fa-times text-lg"></i>
+        </button-atom>
       </div>
     </div>
 
@@ -60,15 +46,7 @@
 
     <!-- Modal Footer -->
     <div class="px-6 py-4 bg-gray-50 flex items-center justify-end gap-3">
-      <button-atom
-        [text]="'Cancelar'"
-        [type]="'button'"
-        [color]="'red'"
-        [variant]="'outline'"
-        [size]="'md'"
-        (click)="onCancel()"
-      ></button-atom>
-      
+
       <button-atom
         [text]="mode === 'assign' ? 'Asignar' : 'Reasignar'"
         [type]="'button'"
