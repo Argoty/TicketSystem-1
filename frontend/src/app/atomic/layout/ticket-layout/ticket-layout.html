@@ -31,42 +31,42 @@
           </app-button></div> -->
           <div *ngIf="ticketObj.ticket.state == 'ABIERTO'">
             <button-atom [text]="'Asignar'" [type]="'button'" [color]="'blue'" [variant]="'solid'" [size]="'md'"
-              (click)="assign.emit()">
+              (click)="assign.emit()" [extraClass]="'w-full'">
             </button-atom>
           </div>
 
           <div *ngIf="ticketObj.ticket.state == 'EN_PROGRESO'">
             <button-atom [text]="'Reasignar'" [type]="'button'" [color]="'blue'" [variant]="'solid'" [size]="'md'"
-              (click)="reassign.emit()">
+              (click)="reassign.emit()" [extraClass]="'w-full'">
             </button-atom>
           </div>
 
           <div *ngIf="ticketObj.ticket.state == 'EN_PROGRESO'">
-            <button-atom [text]="'Marcar como resuelto'" [type]="'button'" [color]="'blue'" [variant]="'solid'"
-              [size]="'md'" (click)="resolve.emit()">
+            <button-atom [text]="'Marcar como resuelto'" [type]="'button'" [color]="'purple'" [variant]="'solid'"
+              [size]="'md'" (click)="resolve.emit()" [extraClass]="'w-full'">
             </button-atom>
           </div>
 
           <div *ngIf="ticketObj.ticket.state == 'RESUELTO'">
             <button-atom [text]="'Cerrar ticket'" [type]="'button'" [color]="'blue'" [variant]="'solid'" [size]="'md'"
-              (click)="close.emit()">
+              (click)="close.emit()" [extraClass]="'w-full'">
             </button-atom>
           </div>
 
           <div *ngIf="ticketObj.ticket.state == 'RESUELTO'">
-            <button-atom [text]="'Reabrir ticket'" [type]="'button'" [color]="'blue'" [variant]="'solid'" [size]="'md'"
-              (click)="reopen.emit()">
+            <button-atom [text]="'Reabrir ticket'" [type]="'button'" [color]="'purple'" [variant]="'solid'" [size]="'md'"
+              (click)="reopen.emit()" [extraClass]="'w-full'">
             </button-atom>
           </div>
           <div *ngIf="ticketObj.ticket.state == 'CERRADO'">
             <button-atom [text]="'Reabrir ticket'" [type]="'button'" [color]="'blue'" [variant]="'solid'" [size]="'md'"
-              (click)="resolve.emit()">
+              (click)="resolve.emit()" [extraClass]="'w-full'">
             </button-atom>
           </div>
 
           <div *ngIf="ticketObj.ticket.state == 'ABIERTO'" class="pt-3 border-t border-gray-200">
-            <button-atom [text]="'Eliminar'" [type]="'button'" [color]="'blue'" [variant]="'solid'" [size]="'md'"
-              (click)="delete.emit()">
+            <button-atom [text]="'Eliminar'" [type]="'button'" [color]="'red'" [variant]="'solid'" [size]="'md'"
+              (click)="delete.emit()" [extraClass]="'w-full'">
             </button-atom>
           </div>
         </div>

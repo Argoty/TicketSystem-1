@@ -1,0 +1,83 @@
+<!-- Modal Backdrop -->
+<div
+  *ngIf="isOpen"
+  (click)="onBackdropClick($event)"
+  class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 backdrop-blur-sm"
+>
+  <!-- Modal Container -->
+  <div
+    class="relative bg-white rounded-3xl shadow-2xl w-full max-w-md mx-4 overflow-hidden"
+    (click)="$event.stopPropagation()"
+  >
+    <!-- Modal Header -->
+    <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-5">
+      <div class="flex items-center justify-between">
+        <h3 class="text-xl font-bold text-white flex items-center gap-2">
+          <i class="fas fa-user-plus"></i>
+          {{ modalTitle }}
+        </h3>
+        <button
+          type="button"
+          (click)="closeModal()"
+          class="text-white/80 hover:text-white hover:bg-white/20 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center transition-all"
+        >
+          <svg
+            class="w-4 h-4"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 14 14"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+            />
+          </svg>
+          <span class="sr-only">Cerrar modal</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="p-6">
+      <select-atom
+        [options]="agentOptions"
+        [label]="'Seleccionar agente'"
+        [required]="true"
+        [placeholder]="'Elige un agente'"
+        [value]="selectedAgentId || ''"
+        (selectionChange)="onAgentSelected($event)"
+      ></select-atom>
+
+      <div *ngIf="mode === 'reassign'" class="mt-3 text-sm text-gray-600">
+        <i class="fas fa-info-circle text-indigo-500"></i>
+        El ticket será reasignado al nuevo agente seleccionado.
+      </div>
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="px-6 py-4 bg-gray-50 flex items-center justify-end gap-3">
+      <button-atom
+        [text]="'Cancelar'"
+        [type]="'button'"
+        [color]="'red'"
+        [variant]="'outline'"
+        [size]="'md'"
+        (click)="onCancel()"
+      ></button-atom>
+      
+      <button-atom
+        [text]="mode === 'assign' ? 'Asignar' : 'Reasignar'"
+        [type]="'button'"
+        [color]="'blue'"
+        [variant]="'solid'"
+        [size]="'md'"
+        [disabled]="!selectedAgentId"
+        (click)="onConfirm()"
+      ></button-atom>
+    </div>
+  </div>
+</div>
