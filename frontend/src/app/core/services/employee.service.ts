@@ -11,6 +11,13 @@ export interface EmployeeResponseDTO {
   department: string;
 }
 
+export interface EmployeeCreateDTO {
+  name: string;
+  email: string;
+  password: string;
+  department: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -36,5 +43,21 @@ export class EmployeeService {
   getAgents() : Observable<EmployeeResponseDTO[]> {
     const params = new HttpParams().set('role', 'AGENT');
     return this.http.get<EmployeeResponseDTO[]>(`${this.apiUrl}`, { headers: this.getHeaders(), params });
+
+  }
+   getAllEmployees(): Observable<EmployeeResponseDTO[]> {
+     return this.http.get<EmployeeResponseDTO[]>(this.apiUrl, { headers: this.getHeaders() });
+   }
+
+   createEmployee(payload: EmployeeCreateDTO): Observable<EmployeeResponseDTO> {
+     return this.http.post<EmployeeResponseDTO>(this.apiUrl, payload, { headers: this.getHeaders() });
+   }
+
+   deleteEmployee(id: number): Observable<void> {
+     return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
+   }
+
+  getEmployeeByEmail(email: string): Observable<EmployeeResponseDTO> {
+    return this.http.get<EmployeeResponseDTO>(`${this.apiUrl}/email/${encodeURIComponent(email)}`, { headers: this.getHeaders() });
   }
 }

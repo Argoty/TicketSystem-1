@@ -1,13 +1,16 @@
 import { Component, Output, EventEmitter, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ButtonComponent } from '../../atoms/button/button';
+import { InputComponent } from '../../atoms/input/input';
+import { TextareaComponent } from '../../atoms/textarea/textarea';
 import { CategoryService, CategoryResponseDTO } from '../../../core/services/category.service';
 import { TicketService, TicketCreateDTO } from '../../../core/services/ticket.service';
 
 @Component({
   selector: 'app-create-ticket-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ButtonComponent, InputComponent, TextareaComponent],
   templateUrl: './create-ticket-modal.html',
   styleUrl: './create-ticket-modal.css'
 })

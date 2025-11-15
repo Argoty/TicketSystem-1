@@ -1,0 +1,256 @@
+<app-dashboard-layout [userInfo]="userInfo" (logout)="handleLogout()">
+  <div class="mb-8 flex justify-between items-center">
+    <div>
+      <h2 class="text-3xl font-bold text-gray-800 mb-2">Panel de Administración</h2>
+      <p class="text-gray-600">Gestiona categorías, empleados y asignaciones</p>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-[#8b9d8e]">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-gray-500 text-sm font-medium">Total Tickets</p>
+          <p class="text-3xl font-bold text-gray-800">{{ tickets.length }}</p>
+        </div>
+        <div class="bg-[#8b9d8e] bg-opacity-20 rounded-full p-3">
+          <i class="fas fa-ticket-alt text-[#8b9d8e] text-2xl"></i>
+        </div>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-gray-500 text-sm font-medium">Abiertos</p>
+          <p class="text-3xl font-bold text-gray-800">{{ getCountByState('ABIERTO') }}</p>
+        </div>
+        <div class="bg-blue-100 rounded-full p-3">
+          <i class="fas fa-folder-open text-blue-500 text-2xl"></i>
+        </div>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-yellow-500">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-gray-500 text-sm font-medium">En Proceso</p>
+          <p class="text-3xl font-bold text-gray-800">{{ getCountByState('EN_PROCESO') }}</p>
+        </div>
+        <div class="bg-yellow-100 rounded-full p-3">
+          <i class="fas fa-spinner text-yellow-500 text-2xl"></i>
+        </div>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-gray-500 text-sm font-medium">Resueltos</p>
+          <p class="text-3xl font-bold text-gray-800">{{ getCountByState('RESUELTO') }}</p>
+        </div>
+        <div class="bg-green-100 rounded-full p-3">
+          <i class="fas fa-check-circle text-green-500 text-2xl"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Employees Management -->
+  <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-xl font-bold text-gray-800">Empleados</h3>
+    </div>
+
+    <!-- Create Employee -->
+    <div class="grid md:grid-cols-4 gap-3 mb-4">
+      <input-atom placeholder="Nombre" [value]="newEmployeeForm.name" (valueChange)="newEmployeeForm.name = $event"></input-atom>
+      <input-atom type="email" placeholder="Correo" [value]="newEmployeeForm.email" (valueChange)="newEmployeeForm.email = $event"></input-atom>
+      <input-atom type="password" placeholder="Contraseña" [value]="newEmployeeForm.password" (valueChange)="newEmployeeForm.password = $event"></input-atom>
+      <div class="grid grid-cols-2 gap-3">
+        <input-atom placeholder="Departamento" [value]="newEmployeeForm.department" (valueChange)="newEmployeeForm.department = $event"></input-atom>
+        <button-atom (click)="createEmployee()" [extraClass]="'w-full px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700'">Crear</button-atom>
+      </div>
+    </div>
+
+    <!-- Employees List -->
+    @if(isLoadingEmployees) {
+      <p class="text-gray-500">Cargando empleados...</p>
+    } @else {
+      <!-- Search by email -->
+      <div class="bg-gray-50 rounded-lg p-4 mb-4 flex gap-3 items-end">
+        <input-atom type="email" placeholder="Buscar por correo" [value]="searchEmail" (valueChange)="searchEmail = $event" [extraClass]="'max-w-md'">
+        </input-atom>
+        <button-atom (click)="searchEmployeeByEmail()" [extraClass]="'px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700'">Buscar</button-atom>
+        @if(searchedEmployee) {
+          <span class="text-sm text-gray-700">Encontrado: {{ searchedEmployee!.name }} ({{ searchedEmployee!.email }}) - Rol {{ searchedEmployee!.role }}</span>
+        }
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Correo</th>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rol</th>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Departamento</th>
+              <th class="px-4 py-2"></th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            @for(emp of employees; track emp.id) {
+              <tr>
+                <td class="px-4 py-2">
+                  @if(editEmployeeId === emp.id) {
+                    <input-atom [value]="editEmployee.name" (valueChange)="editEmployee.name = $event"></input-atom>
+                  } @else { {{ emp.name }} }
+                </td>
+                <td class="px-4 py-2">
+                  @if(editEmployeeId === emp.id) {
+                    <input-atom type="email" [value]="editEmployee.email" (valueChange)="editEmployee.email = $event"></input-atom>
+                  } @else { {{ emp.email }} }
+                </td>
+                <td class="px-4 py-2">
+                  @if(editEmployeeId === emp.id) {
+                    <select class="border rounded-lg p-2.5 text-sm w-full" [(ngModel)]="editEmployee.role">
+                      @for(r of roleOptions; track r) {
+                        <option [ngValue]="r">{{ r }}</option>
+                      }
+                    </select>
+                  } @else { {{ emp.role }} }
+                </td>
+                <td class="px-4 py-2">
+                  @if(editEmployeeId === emp.id) {
+                    <input-atom [value]="editEmployee.department" (valueChange)="editEmployee.department = $event"></input-atom>
+                  } @else { {{ emp.department }} }
+                </td>
+                <td class="px-4 py-2 flex gap-2 justify-end">
+                  @if(editEmployeeId === emp.id) {
+                    <button-atom (click)="saveEditEmployee()" [extraClass]="'px-3 py-2 bg-blue-600 text-white rounded-lg'">Guardar</button-atom>
+                    <button-atom (click)="cancelEditEmployee()" [extraClass]="'px-3 py-2 bg-gray-200 text-gray-800 rounded-lg'">Cancelar</button-atom>
+                  } @else {
+                    <button-atom (click)="startEditEmployee(emp)" [extraClass]="'px-3 py-2 bg-blue-600 text-white rounded-lg'">Editar</button-atom>
+                    <button-atom (click)="deleteEmployee(emp.id)" [extraClass]="'px-3 py-2 bg-red-600 text-white rounded-lg'">Eliminar</button-atom>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+
+  <!-- Categories CRUD -->
+  <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-xl font-bold text-gray-800">Categorías</h3>
+    </div>
+
+    <!-- Create -->
+    <div class="grid md:grid-cols-3 gap-3 mb-4">
+      <input-atom placeholder="Nombre" [value]="newCategory.name" (valueChange)="newCategory.name = $event"></input-atom>
+      <input-atom placeholder="Descripción" [value]="newCategory.description" (valueChange)="newCategory.description = $event"></input-atom>
+      <button-atom (click)="createCategory()" [extraClass]="'w-full px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700'">Crear</button-atom>
+    </div>
+
+    <!-- List -->
+    @if(isLoadingCategories) {
+      <p class="text-gray-500">Cargando categorías...</p>
+    } @else {
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Descripción</th>
+              <th class="px-4 py-2"></th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            @for(cat of categories; track cat.id) {
+              <tr>
+                <td class="px-4 py-2">
+                  @if(editCategoryId === cat.id) {
+                    <input-atom [value]="editCategory.name" (valueChange)="editCategory.name = $event"></input-atom>
+                  } @else { {{ cat.name }} }
+                </td>
+                <td class="px-4 py-2">
+                  @if(editCategoryId === cat.id) {
+                    <input-atom [value]="editCategory.description" (valueChange)="editCategory.description = $event"></input-atom>
+                  } @else { {{ cat.description }} }
+                </td>
+                <td class="px-4 py-2 flex gap-2 justify-end">
+                  @if(editCategoryId === cat.id) {
+                    <button-atom (click)="saveEditCategory()" [extraClass]="'px-3 py-2 bg-green-600 text-white rounded-lg'">Guardar</button-atom>
+                    <button-atom (click)="cancelEditCategory()" [extraClass]="'px-3 py-2 bg-gray-200 text-gray-800 rounded-lg'">Cancelar</button-atom>
+                  } @else {
+                    <button-atom (click)="startEditCategory(cat)" [extraClass]="'px-3 py-2 bg-blue-600 text-white rounded-lg'">Editar</button-atom>
+                    <button-atom (click)="deleteCategory(cat.id)" [extraClass]="'px-3 py-2 bg-red-600 text-white rounded-lg'">Eliminar</button-atom>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+
+  <!-- Assignment tools -->
+  <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+    <h3 class="text-xl font-bold text-gray-800 mb-4">Asignaciones</h3>
+
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Título</th>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prioridad</th>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoría</th>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Agente</th>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nuevo estado</th>
+            <th class="px-4 py-2"></th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          @for(t of tickets; track t.id) {
+            <tr>
+              <td class="px-4 py-2 text-sm text-gray-700">{{ t.id }}</td>
+              <td class="px-4 py-2 text-sm text-gray-900">{{ t.title }}</td>
+              <td class="px-4 py-2 text-sm">{{ t.state }}</td>
+              <td class="px-4 py-2 text-sm">{{ t.priority }}</td>
+              <td class="px-4 py-2 text-sm">{{ t.category.name }}</td>
+              <td class="px-4 py-2">
+                <select class="border rounded-lg p-2.5 text-sm w-full" [(ngModel)]="selectedAgentByTicket[t.id]">
+                  <option [ngValue]="null">Seleccione agente</option>
+                  @for(a of agentList; track a.id) {
+                    <option [ngValue]="a.id">{{ a.name }} ({{ a.email }})</option>
+                  }
+                </select>
+              </td>
+              <td class="px-4 py-2">
+                <select class="border rounded-lg p-2.5 text-sm w-full" [(ngModel)]="selectedStateByTicket[t.id]">
+                  <option [ngValue]="null">Seleccione estado</option>
+                  @for(s of stateOptions; track s) {
+                    <option [ngValue]="s">{{ s }}</option>
+                  }
+                </select>
+              </td>
+              <td class="px-4 py-2 flex gap-2 justify-end">
+                <button-atom (click)="assignTicket(t.id)" [extraClass]="'px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700'">Asignar</button-atom>
+                <button-atom (click)="reassignTicket(t.id)" [extraClass]="'px-3 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700'">Reasignar</button-atom>
+                <button-atom (click)="changeTicketState(t.id)" [extraClass]="'px-3 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600'">Cambiar estado</button-atom>
+                <button-atom (click)="deleteTicket(t.id)" [extraClass]="'px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700'">Eliminar</button-atom>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    @if(lastAssignment) {
+      <p class="text-sm text-gray-600 mt-3">Última acción: Ticket {{ lastAssignment!.ticket.id }} asignado a {{ lastAssignment!.employee.name }}</p>
+    }
+  </div>
+</app-dashboard-layout>

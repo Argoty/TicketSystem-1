@@ -41,6 +41,14 @@ export class AssignmentService {
 
     reassignEmployee(ticketId: number, newEmployeeId: number): Observable<AssignmentRespondeDTO> {
         const params = new HttpParams().set('employeeId', newEmployeeId);
-        return this.http.put<AssignmentRespondeDTO>(`${this.apiUrl}/reassign/${ticketId}`, null, { headers: this.getHeaders(), params });
+        return this.http.patch<AssignmentRespondeDTO>(`${this.apiUrl}/reassign/${ticketId}`, null, { headers: this.getHeaders(), params });
+    }
+
+    getAssignmentsByEmployee(employeeId: number, query?: string): Observable<AssignmentRespondeDTO[]> {
+        let params = new HttpParams();
+        if (query && query.trim()) {
+            params = params.set('query', query.trim());
+        }
+        return this.http.get<AssignmentRespondeDTO[]>(`${this.apiUrl}/employee/${employeeId}`, { headers: this.getHeaders(), params });
     }
 }

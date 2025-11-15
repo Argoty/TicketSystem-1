@@ -19,6 +19,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +39,7 @@ public class TicketController {
         @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
     @PostMapping
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<TicketResponseDTO> createTicket(@Valid @RequestBody TicketCreateDTO ticketCreateDTO) {
         TicketResponseDTO ticketCreated = ticketService.createTicket(ticketCreateDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(ticketCreated); // 201 Created
@@ -50,6 +52,7 @@ public class TicketController {
         @ApiResponse(responseCode = "404", description = "Tiquete no encontrado."),
         @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
+    @PreAuthorize("hasAnyRole('ADMIN','AGENT')")
     @PutMapping("/{id}/state")
     public ResponseEntity<TicketResponseDTO> updateState(
             @PathVariable @Positive Long id,
@@ -65,6 +68,7 @@ public class TicketController {
         @ApiResponse(responseCode = "404", description = "Tiquete no encontrado."),
         @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTicket(@PathVariable @Positive Long id) {
         ticketService.deleteTicket(id);
@@ -77,6 +81,7 @@ public class TicketController {
         @ApiResponse(responseCode = "404", description = "Tiquete no encontrado."),
         @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
+    @PreAuthorize("hasAnyRole('ADMIN','AGENT','USER')")
     @GetMapping("/{id}")
     public ResponseEntity<TicketResponseDTO> getTicketById(@PathVariable @Positive Long id) {
         TicketResponseDTO ticket = ticketService.getTicketById(id);
@@ -89,6 +94,7 @@ public class TicketController {
         @ApiResponse(responseCode = "400", description = "Parámetros de consulta inválidos."),
         @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<TicketResponseDTO>> getAllTickets() {
         List<TicketResponseDTO> tickets = ticketService.getAllTickets();
@@ -101,6 +107,7 @@ public class TicketController {
         @ApiResponse(responseCode = "400", description = "Estado inválido o parámetros de consulta incorrectos."),
         @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
+    @PreAuthorize("hasAnyRole('ADMIN','AGENT')")
     @GetMapping("/state/{state}")
     public ResponseEntity<List<TicketResponseDTO>> getTicketsByState(@PathVariable State state) {
         List<TicketResponseDTO> tickets = ticketService.getTicketsByState(state);
@@ -114,6 +121,7 @@ public class TicketController {
         @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
 
     })
+    @PreAuthorize("hasAnyRole('ADMIN','AGENT','USER')")
     @GetMapping("/{id}/comments")
     public ResponseEntity<List<CommentResponseDTO>> getAllCommentsByTicketId(@PathVariable @Positive Long id) {
         List<CommentResponseDTO> comments = ticketService.getAllCommentsByTicketId(id);
@@ -127,6 +135,7 @@ public class TicketController {
         @ApiResponse(responseCode = "404", description = "Tiquete no encontrado."),
         @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
+    @PreAuthorize("hasAnyRole('ADMIN','AGENT','USER')")
     @GetMapping("/{id}/tickets-record")
     public ResponseEntity<List<TicketRecordResponseDTO>> getAllTicketRecordsByTicketId(
             @PathVariable @Positive Long id,

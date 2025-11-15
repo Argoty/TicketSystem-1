@@ -9,6 +9,16 @@ export interface CategoryResponseDTO {
     description: string;
 }
 
+export interface CategoryCreateDTO {
+    name: string;
+    description: string;
+}
+
+export interface CategoryUpdateDTO {
+    name: string;
+    description: string;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -24,5 +34,17 @@ export class CategoryService {
     }
     getAllCategories(): Observable<CategoryResponseDTO[]> {
         return this.http.get<CategoryResponseDTO[]>(this.apiUrl, { headers: this.getHeaders() });
+    }
+
+    createCategory(payload: CategoryCreateDTO): Observable<CategoryResponseDTO> {
+        return this.http.post<CategoryResponseDTO>(this.apiUrl, payload, { headers: this.getHeaders() });
+    }
+
+    updateCategory(id: number, payload: CategoryUpdateDTO): Observable<CategoryResponseDTO> {
+        return this.http.put<CategoryResponseDTO>(`${this.apiUrl}/${id}`, payload, { headers: this.getHeaders() });
+    }
+
+    deleteCategory(id: number): Observable<void> {
+        return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
     }
 }

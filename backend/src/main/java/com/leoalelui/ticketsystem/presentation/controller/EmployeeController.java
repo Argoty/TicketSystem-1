@@ -52,6 +52,7 @@ public class EmployeeController {
             @ApiResponse(responseCode = "404", description = "Empleado no encontrado."),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<EmployeeResponseDTO> updateEmployee(
             @PathVariable @Positive Long id,
@@ -67,6 +68,7 @@ public class EmployeeController {
             @ApiResponse(responseCode = "404", description = "Empleado no encontrado."),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable @Positive Long id) {
         employeeService.deleteEmployee(id);
@@ -79,6 +81,7 @@ public class EmployeeController {
             @ApiResponse(responseCode = "404", description = "Empleado no encontrado."),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
+    @PreAuthorize("hasRole('ADMIN') or #id == principal.id")
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeResponseDTO> getEmployeeById(@PathVariable @Positive Long id) {
         EmployeeResponseDTO employeeFound = employeeService.getEmployeeById(id);
@@ -92,6 +95,7 @@ public class EmployeeController {
             @ApiResponse(responseCode = "400", description = "Parámetros de consulta inválidos."),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<EmployeeResponseDTO>> getAllEmployees(@RequestParam(value="role", required = false) @Parameter(description = "Parámetro de filtro por rol") Role role) {
         List<EmployeeResponseDTO> employees = employeeService.getAllEmployees(role);
@@ -105,6 +109,7 @@ public class EmployeeController {
             @ApiResponse(responseCode = "404", description = "Empleado no encontrado."),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
+    @PreAuthorize("hasRole('ADMIN') or #email == principal.username")
     @GetMapping("/email/{email}")
     public ResponseEntity<EmployeeResponseDTO> getEmployeeByEmail(@PathVariable @Email String email) {
         EmployeeResponseDTO employeeFound = employeeService.getEmployeeByEmail(email);
