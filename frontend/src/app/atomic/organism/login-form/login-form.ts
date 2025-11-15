@@ -63,10 +63,10 @@ export class LoginFormComponent {
               this.router.navigate(['/dashboard/user']);
               break;
             case 'AGENT':
-              //this.router.navigate(['/dashboard/agent']);
+              this.router.navigate(['/dashboard/agent']);
               break;
             case 'ADMIN':
-              //this.router.navigate(['/dashboard/admin']);
+              this.router.navigate(['/dashboard/admin']);
               break;
             default:
               this.router.navigate(['/login']);

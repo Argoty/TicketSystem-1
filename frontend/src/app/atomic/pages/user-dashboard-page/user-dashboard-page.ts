@@ -5,11 +5,12 @@ import { DashboardLayoutComponent, UserInfo } from '../../layout/dashboard-layou
 import { TicketCardComponent, TicketCardData } from '../../molecules/ticket-card/ticket-card';
 import { TicketService, TicketResponseDTO } from '../../../core/services/ticket.service';
 import { CreateTicketModalComponent } from '../../organism/create-ticket-modal/create-ticket-modal';
+import { ButtonComponent } from '../../atoms/button/button';
 
 @Component({
   selector: 'app-user-dashboard-page',
   standalone: true,
-  imports: [CommonModule, DashboardLayoutComponent, TicketCardComponent, CreateTicketModalComponent],
+  imports: [CommonModule, DashboardLayoutComponent, TicketCardComponent, CreateTicketModalComponent, ButtonComponent],
   templateUrl: './user-dashboard-page.html',
   styleUrl: './user-dashboard-page.css'
 })

@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DashboardLayoutComponent, UserInfo } from '../../layout/dashboard-layout/dashboard-layout';
+import { ButtonComponent } from '../../atoms/button/button';
+import { InputComponent } from '../../atoms/input/input';
 import { EmployeeService, EmployeeResponseDTO } from '../../../core/services/employee.service';
 
 @Component({
   selector: 'app-profile-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, DashboardLayoutComponent],
+  imports: [CommonModule, FormsModule, DashboardLayoutComponent, ButtonComponent, InputComponent],
   templateUrl: './profile-page.html',
   styleUrl: './profile-page.css'
 })

@@ -20,10 +20,10 @@
               (click)="toggleUserMenu()"
               class="flex items-center space-x-3 focus:outline-none hover:opacity-80 transition-opacity"
             >
-            <div class="text-right hidden sm:block">
-              <p class="text-sm font-semibold text-[#e8e8e3]">{{ userInfo.name || 'Usuario' }}</p>
-              <p class="text-xs text-[#b8b5ad]">{{ userInfo.role || 'Empleado' }}</p>
-            </div>
+            <span class="text-right hidden sm:block">
+              <span class="block text-sm font-semibold text-[#e8e8e3]">{{ userInfo.name || 'Usuario' }}</span>
+              <span class="block text-xs text-[#b8b5ad]">{{ userInfo.role || 'Empleado' }}</span>
+            </span>
             <app-avatar 
               [initials]="getUserInitials()" 
               size="md" 
@@ -32,8 +32,8 @@
           </button>
 
           <!-- Dropdown Menu -->
+          @if(showUserMenu) {
           <div 
-            *ngIf="showUserMenu"
             class="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50"
           >
             <div class="px-4 py-3 border-b border-gray-200">
@@ -56,10 +56,11 @@
               <span>Cerrar Sesión</span>
             </button>
           </div>
+          }
         </div>
       </div>
     </div>
-  </div>
+    </div>
   </header>
 
   <!-- Main Content -->
