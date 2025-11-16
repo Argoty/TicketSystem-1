@@ -17,8 +17,8 @@ public class CommentResponseDTO {
     @Schema(description = "Identificador único del comentario", example = "101")
     private Long id;
 
-    @Schema(description = "Resumen del ticket al que pertenece")
-    private TicketResponseDTO ticket;
+    @Schema(description = "ID del ticket al que pertenece")
+    private Long ticketId;
 
     @Schema(description = "Información del empleado que realizó el comentario")
     private EmployeeResponseDTO employee;

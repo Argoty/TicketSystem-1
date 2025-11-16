@@ -18,6 +18,7 @@ public interface CommentMapper {
     @Mapping(target = "employee", source = "employeeId", qualifiedByName = "employeeIdToEntity")
     CommentEntity toEntity(CommentCreateDTO commentCreateDTO);
 
+    @Mapping(target = "ticketId", source = "ticket.id")
     CommentResponseDTO toResponseDTO(CommentEntity commentEntity);
 
     @Named("ticketIdToEntity")
