@@ -18,6 +18,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,12 +53,23 @@ public class EmployeeController {
             @ApiResponse(responseCode = "404", description = "Empleado no encontrado."),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor.")
     })
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or #id == principal.id")
     @PutMapping("/{id}")
     public ResponseEntity<EmployeeResponseDTO> updateEmployee(
             @PathVariable @Positive Long id,
-            @Valid @RequestBody EmployeeUpdateDTO employeeUpdateDTO
+            @Valid @RequestBody EmployeeUpdateDTO employeeUpdateDTO,
+            Authentication authentication
     ) {
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .anyMatch(auth -> auth.equals("ROLE_ADMIN"));
+
+        // Preserve current role if null in request, and prevent non-admins from changing it
+        EmployeeResponseDTO current = employeeService.getEmployeeById(id);
+        if (employeeUpdateDTO.getRole() == null || !isAdmin) {
+            employeeUpdateDTO.setRole(current.getRole());
+        }
+
         EmployeeResponseDTO employeeUpdated = employeeService.updateEmployee(id, employeeUpdateDTO);
         return ResponseEntity.ok(employeeUpdated); // 200 OK
     }
