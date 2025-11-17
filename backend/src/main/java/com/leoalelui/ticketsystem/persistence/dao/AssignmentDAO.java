@@ -1,0 +1,92 @@
+package com.leoalelui.ticketsystem.persistence.dao;
+
+import com.leoalelui.ticketsystem.domain.dto.request.AssignmentCreateDTO;
+import com.leoalelui.ticketsystem.domain.dto.response.AssignmentResponseDTO;
+import com.leoalelui.ticketsystem.persistence.entity.AssignmentEntity;
+import com.leoalelui.ticketsystem.persistence.entity.EmployeeEntity;
+import com.leoalelui.ticketsystem.persistence.mapper.AssignmentMapper;
+import com.leoalelui.ticketsystem.persistence.repository.AssignmentRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * DAO para gestionar asignaciones en la capa de persistencia.
+ *
+ * @author Leonardo
+ */
+@Repository
+@RequiredArgsConstructor
+public class AssignmentDAO {
+
+    private final AssignmentRepository assignmentRepository;
+    private final AssignmentMapper assignmentMapper;
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Transactional
+    public AssignmentResponseDTO save(AssignmentCreateDTO createDTO) {
+        AssignmentEntity entity = assignmentMapper.toEntity(createDTO);
+        AssignmentEntity saved = assignmentRepository.save(entity);
+        entityManager.flush();
+        entityManager.refresh(saved);
+        return assignmentMapper.toDTO(saved);
+    }
+
+    @Transactional(readOnly = true)
+    public List<AssignmentResponseDTO> getByEmployeeId(Long employeeId, String query) {
+        if (query == null || query.isEmpty()) {
+            return assignmentMapper.toDTOList(assignmentRepository.findByEmployeeId(employeeId));
+        }
+        return assignmentMapper.toDTOList(assignmentRepository.findByEmployeeIdAndQuery(employeeId, query));
+    }
+
+    @Transactional(readOnly = true)
+    public AssignmentResponseDTO getByTicketId(Long ticketId) {
+        AssignmentEntity entity = assignmentRepository.findByTicketId(ticketId);
+        return entity != null ? assignmentMapper.toDTO(entity) : null;
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<AssignmentEntity> findById(Long id) {
+        return assignmentRepository.findById(id);
+    }
+
+    @Transactional
+    public AssignmentResponseDTO update(AssignmentEntity entity) {
+        AssignmentEntity updated = assignmentRepository.save(entity);
+        return assignmentMapper.toDTO(updated);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<AssignmentEntity> findEntityByTicketId(Long ticketId) {
+        return Optional.ofNullable(assignmentRepository.findByTicketId(ticketId));
+    }
+
+    /**
+     * Reasigna la asignación asociada a ticketId al empleado newEmployeeId. -
+     * Usa getReference para evitar cargar el Employee completo.
+     */
+    @Transactional
+    public AssignmentResponseDTO reassignByTicketId(Long ticketId, Long newEmployeeId) {
+        AssignmentEntity assignment = assignmentRepository.findByTicketId(ticketId);
+        if (assignment == null) {
+            throw new RuntimeException("No existe una asignación para el ticket con id: " + ticketId);
+        }
+
+        // Consigue una referencia al Employee 
+        EmployeeEntity employeeRef = entityManager.getReference(EmployeeEntity.class, newEmployeeId);
+
+        // Asigna y guarda
+        assignment.setEmployee(employeeRef);
+        AssignmentEntity saved = assignmentRepository.save(assignment);
+
+        return assignmentMapper.toDTO(saved);
+    }
+}

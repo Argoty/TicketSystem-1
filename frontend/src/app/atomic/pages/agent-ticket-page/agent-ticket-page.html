@@ -1,0 +1,28 @@
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+  @if(ticketData) {
+    <div class="mb-6 flex items-center gap-2 text-gray-500 text-sm">
+      <span class="text-gray-700 font-medium">#{{ ticketData.ticket.id }}</span>
+    </div>
+
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Ticket #{{ ticketData.ticket.id }}</h1>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <div class="lg:col-span-2">
+        <app-ticket-info [ticketObj]="{ ticket: ticketData.ticket, assignment: ticketData.assignment }" />
+      </div>
+      <div>
+        <div class="bg-white rounded-2xl shadow border p-6">
+          <h3 class="text-lg font-bold text-gray-800 mb-4">Acciones</h3>
+          <p class="text-sm text-gray-600 mb-2">Usa las acciones disponibles en tu Dashboard de agente.</p>
+          <button-atom (click)="goBack()" [extraClass]="'w-full px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700'">Volver</button-atom>
+        </div>
+      </div>
+    </div>
+
+    <app-comments-section [ticketId]="ticketData.ticket.id" />
+  } @else {
+    <div class="text-center py-12">
+      <i class="fas fa-spinner fa-spin text-4xl text-[#8b9d8e] mb-2"></i>
+      <p class="text-gray-600">Cargando ticket...</p>
+    </div>
+  }
+</div>

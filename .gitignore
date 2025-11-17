@@ -26,7 +26,9 @@ report.*
 # =====================================================
 # Backend – Spring Boot (Gradle)
 # =====================================================
+/backend/bin/
 /backend/build/
+/backend/out/
 /backend/.gradle/
 
 # IDE y archivos compilados
@@ -46,6 +48,10 @@ report.*
 /backend/nbdist/
 /backend/.nb-gradle/
 /backend/nb-configuration.xml
+
+/backend/ajcore.*.txt
+/backend/allure-results/
+/backend/docker-compose-db.yml
 
 # =====================================================
 # Frontend – Angular (npm)
@@ -72,5 +78,13 @@ report.*
 /frontend/.DS_Store
 /frontend/Thumbs.db
 
+# Archivos temporales de VSCode y sistema
+/frontend/.vscode/
+/frontend/.history/
+/frontend/.eslintcache
 
-
+# =====================================================
+# Documentación y archivos del sistema
+# =====================================================
+*.goutputstream*
+~$*

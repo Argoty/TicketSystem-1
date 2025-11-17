@@ -1,0 +1,66 @@
+<app-dashboard-layout [userInfo]="userInfo" (logout)="handleLogout()">
+  <div class="mb-6">
+    <h2 class="text-2xl font-bold text-gray-800">Mis asignaciones</h2>
+    <p class="text-gray-600">Tickets asignados a ti</p>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-md p-4 mb-4 flex gap-3 items-end">
+    <input class="border rounded-lg p-2.5 text-sm w-full md:w-80" [(ngModel)]="query" placeholder="Buscar... (título, categoría, etc.)" />
+    <button-atom (click)="loadAssignments()" [extraClass]="'px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700'">Buscar</button-atom>
+  </div>
+
+  @if(isLoading) {
+    <div class="text-center py-12">
+      <i class="fas fa-spinner fa-spin text-4xl text-[#8b9d8e] mb-2"></i>
+      <p class="text-gray-600">Cargando asignaciones...</p>
+    </div>
+  } @else if(assignments.length === 0) {
+    <div class="text-center py-12 bg-white rounded-xl shadow-md">
+      <i class="fas fa-inbox text-6xl text-gray-300 mb-4"></i>
+      <p class="text-gray-600 text-lg">No tienes asignaciones</p>
+    </div>
+  } @else {
+    <div class="bg-white rounded-xl shadow-md p-6">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Título</th>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prioridad</th>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoría</th>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Asignado</th>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nuevo estado</th>
+              <th class="px-4 py-2"></th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            @for(asg of assignments; track asg.id) {
+              <tr>
+                <td class="px-4 py-2 text-sm text-gray-700">{{ asg.ticket.id }}</td>
+                <td class="px-4 py-2 text-sm text-gray-900">{{ asg.ticket.title }}</td>
+                <td class="px-4 py-2 text-sm">{{ asg.ticket.state }}</td>
+                <td class="px-4 py-2 text-sm">{{ asg.ticket.priority }}</td>
+                <td class="px-4 py-2 text-sm">{{ asg.ticket.category.name }}</td>
+                <td class="px-4 py-2 text-sm">{{ asg.assignmentDate | date: 'short' }}</td>
+                <td class="px-4 py-2">
+                  <select class="border rounded-lg p-2.5 text-sm w-full" [(ngModel)]="selectedStateByTicket[asg.ticket.id]">
+                    <option [ngValue]="null">Seleccione estado</option>
+                    @for(s of stateOptions; track s) {
+                      <option [ngValue]="s">{{ s }}</option>
+                    }
+                  </select>
+                </td>
+                <td class="px-4 py-2 flex gap-2 justify-end">
+                  <button-atom (click)="changeTicketState(asg.ticket.id)" [extraClass]="'px-3 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600'">Cambiar estado</button-atom>
+                  <button-atom (click)="goToTicket(asg.ticket.id)" [extraClass]="'px-3 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700'">Ver detalle</button-atom>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+</app-dashboard-layout>
